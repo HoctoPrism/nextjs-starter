@@ -6,19 +6,22 @@ import {
   experimental_extendTheme as materialExtendTheme,
   THEME_ID as MATERIAL_THEME_ID
 } from "@mui/material/styles";
+import '../../styles/App.scss';
 
 import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import type {} from "@mui/material/themeCssVarsAugmentation";
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import createEmotionCache from "../utils/createEmotionCache";
 
 import {lightTheme} from "@/utils/theme/lightTheme";
 import {darkTheme} from "@/utils/theme/darkTheme";
 import ModeToggle from "@/utils/theme/modeToggle";
+
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import createEmotionCache from "../utils/createEmotionCache";
+
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-
+import {Container} from "@mui/joy";
 const clientSideEmotionCache = createEmotionCache();
 
 export interface MyAppProps extends AppProps {
@@ -41,10 +44,11 @@ export default function MyApp(props: MyAppProps) {
             </Head>
             <MaterialCssVarsProvider defaultMode="system" theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
                 <JoyCssVarsProvider defaultMode="system">
-                    <Header />
-                    <ModeToggle />
                     <CssBaseline />
-                    <Component {...pageProps} />
+                    <Header />
+                    <Container maxWidth="lg" className='main-container'>
+                        <Component {...pageProps} />
+                    </Container>
                     <Footer />
                 </JoyCssVarsProvider>
             </MaterialCssVarsProvider>
