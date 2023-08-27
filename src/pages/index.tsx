@@ -2,7 +2,9 @@
 import type { NextPage } from "next";
 
 import { Typography, Box } from "@mui/material";
+import defineTitle from "@/utils/defineTitle";
 
+defineTitle("Home");
 const Home: NextPage = () => {
     return (
         <Box>
