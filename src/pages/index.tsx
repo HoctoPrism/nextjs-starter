@@ -1,15 +1,15 @@
 // pages/index.tsx
 import type { NextPage } from "next";
 
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 const Home: NextPage = () => {
     return (
-        <div>
+        <Box>
             <Typography variant="h2" textAlign="center">
                 Hello, World
             </Typography>
-        </div>
+        </Box>
         );
 };
 

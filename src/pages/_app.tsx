@@ -1,34 +1,53 @@
-// pages/_app.tsx
+import * as React from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import defaultTheme from '../utils/theme/defaultTheme';
+import {
+  Experimental_CssVarsProvider as MaterialCssVarsProvider,
+  experimental_extendTheme as materialExtendTheme,
+  THEME_ID as MATERIAL_THEME_ID
+} from "@mui/material/styles";
+
+import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import type {} from "@mui/material/themeCssVarsAugmentation";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import createEmotionCache from "../utils/createEmotionCache";
 
-// Client-side cache, shared for the whole session of the user in the browser.
+import {lightTheme} from "@/utils/theme/lightTheme";
+import {darkTheme} from "@/utils/theme/darkTheme";
+import ModeToggle from "@/utils/theme/modeToggle";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+
 const clientSideEmotionCache = createEmotionCache();
 
-// later we'll modify this to its own file
-const theme = createTheme();
 export interface MyAppProps extends AppProps {
     emotionCache?: EmotionCache;
 }
 
+const materialTheme = materialExtendTheme({
+  "colorSchemes": {
+    "light": lightTheme,
+    "dark": darkTheme
+  }
+});
+
 export default function MyApp(props: MyAppProps) {
-    // If there's no emotionCache rendered by the server, use the clientSideEmotionCache
     const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
     return (
         <CacheProvider value={emotionCache}>
             <Head>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
-            <ThemeProvider theme={defaultTheme}>
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <Component {...pageProps} />
-            </ThemeProvider>
+            <MaterialCssVarsProvider defaultMode="system" theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+                <JoyCssVarsProvider defaultMode="system">
+                    <Header />
+                    <ModeToggle />
+                    <CssBaseline />
+                    <Component {...pageProps} />
+                    <Footer />
+                </JoyCssVarsProvider>
+            </MaterialCssVarsProvider>
         </CacheProvider>
         );
 }

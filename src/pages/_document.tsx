@@ -11,7 +11,7 @@ import { AppType } from "next/app";
 import { MyAppProps } from "./_app";
 import createEmotionCache from "../utils/createEmotionCache";
 import createEmotionServer from "@emotion/server/create-instance";
-import defaultTheme from '../utils/theme/defaultTheme';
+import { getInitColorSchemeScript } from '@mui/joy/styles';
 
 interface MyDocumentProps extends DocumentProps {
     emotionStyleTags: JSX.Element[];
@@ -24,10 +24,11 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
                 <link rel="shortcut icon" href="/favicon.ico" />
                 {/* Insertion point for client. This connects with createEmotionCache.ts */}
                 <meta name="emotion-insertion-point" content="" />
-                <meta name="theme-color" content={defaultTheme.palette.primary.main} />
+{/*                <meta name="theme-color" content={darkTheme.palette.primary.main} />*/}
                 {emotionStyleTags}
             </Head>
             <body>
+                {getInitColorSchemeScript()}
                 <Main />
                 <NextScript />
             </body>
