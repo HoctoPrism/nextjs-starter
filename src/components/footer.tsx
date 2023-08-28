@@ -7,7 +7,7 @@ export default function Footer() {
     }, [])
 
     return (
-         <AppBar component='div' id="footer" position="fixed" className='footer-container' sx={{ top: 'auto', bottom: 0, minHeight: "50px", backgroundColor: "primary.main" }}>
+         <AppBar component='div' id="footer" position="fixed" className='footer-container' sx={{ top: 'auto', bottom: 0, minHeight: "50px" }}>
              <Box>
                  Developped by <Link
                      href="https://github.com/HoctoPrism"
