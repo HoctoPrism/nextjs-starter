@@ -1,3 +1,28 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": [
+    "@typescript-eslint",
+    "react-hooks"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "next/core-web-vitals",
+    "next",
+    "airbnb-typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-console": "off",
+    "@typescript-eslint/camelcase": "off",
+    "react/prop-types": ["error"],
+    "indent": ["error", 2],
+    "max-len": ["error", 150]
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }
