@@ -12,25 +12,26 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Alert, Button,
+  Alert,
 } from '@mui/material';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import defineTitle from '@/utils/defineTitle';
-import TypeCollection from '@/models/type/TypeCollection';
+import { ExampleItems } from '@/models/Example';
+import New from '@/components/form/type/new';
+import Update from '@/components/form/type/update';
+import Delete from '@/components/form/type/delete';
+import ToastMessage from '@/models/ToastMessage';
 
-function Type() {
+function Example() {
   defineTitle('Liste des types');
 
-  const [data, setData] = useState<TypeCollection | null>();
+  const [data, setData] = useState<ExampleItems | null>();
   const [loading, setLoading] = useState(true);
   const [toast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState({});
+  const [toastMessage, setToastMessage] = useState<ToastMessage>();
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const { data: status } = useSession();
 
   const handleChangePage = (newPage:number) => {
     setPage(newPage);
@@ -55,29 +56,16 @@ function Type() {
     });
   }, []);
 
-  const handleDataChange = async (dataChange: TypeCollection | null, message:string) => {
+  const handleDataChange = async (dataChange: ExampleItems | null | undefined, message:string) => {
     setData(dataChange);
     if (message && message === 'edit') {
-      setToastMessage({ message: 'Type modifié !', severity: 'success' });
+      setToastMessage({ message: 'Example modifié !', severity: 'success' });
       setShowToast(true);
     } else if (message && message === 'delete') {
-      setToastMessage({ message: 'Type supprimé !', severity: 'success' });
+      setToastMessage({ message: 'Example supprimé !', severity: 'success' });
       setShowToast(true);
     }
   };
-
-  // gestion des droits
-  if (status === 'loading') {
-    return <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>;
-  }
-  if (status === 'unauthenticated') {
-    return (
-      <Box className="f-c-c-c">
-        <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Vous devez être connecté pour accéder à cette ressource</Typography>
-        <Button variant="contained" sx={{ mt: 5 }} href="login">Connexion</Button>
-      </Box>
-    );
-  }
 
   return (
     <Container maxWidth="md" id="type">
@@ -85,9 +73,9 @@ function Type() {
         display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 10,
       }}
       >
-        <Typography variant="h3" sx={{ textAlign: 'center' }} gutterBottom>Types de voiture</Typography>
+        <Typography variant="h3" sx={{ textAlign: 'center' }} gutterBottom>Example</Typography>
         {loading ? (
-          <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement des parkings...</Typography>
+          <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
         ) : (
           <Box sx={{ maxWidth: '100%' }}>
             <New newValue={{ data }} handleDataChange={handleDataChange} />
@@ -143,4 +131,4 @@ function Type() {
   );
 }
 
-export default Type;
+export default Example;
