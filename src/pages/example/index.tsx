@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Container,
   Paper,
   Snackbar,
   Table,
@@ -23,7 +22,7 @@ import Delete from '@/components/form/type/delete';
 import ToastMessage from '@/models/ToastMessage';
 
 function Example() {
-  defineTitle('Liste des types');
+  defineTitle('Liste des examples');
 
   const [data, setData] = useState<ExampleItems | null>();
   const [loading, setLoading] = useState(true);
@@ -33,11 +32,11 @@ function Example() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (newPage:number) => {
+  const handleChangePage = (event: React.MouseEvent | null, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event:Event) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent) => {
     const { name, index } = (event.target as HTMLButtonElement).dataset;
     console.log(name, index);
     setRowsPerPage(+{ name });
@@ -45,10 +44,10 @@ function Example() {
   };
 
   useEffect(() => {
-    axios.get('/api/types').then((actualData) => {
+    axios.get('/api/types').then( async (actualData) => {
       actualData = actualData.data;
-      setLoading(true);
       setData(actualData.data);
+      setLoading(true);
     }).catch(() => {
       setData(null);
     }).finally(() => {
@@ -56,7 +55,7 @@ function Example() {
     });
   }, []);
 
-  const handleDataChange = async (dataChange: ExampleItems | null | undefined, message:string) => {
+  const handleDataChange = (dataChange: ExampleItems | null | undefined, message:string) => {
     setData(dataChange);
     if (message && message === 'edit') {
       setToastMessage({ message: 'Example modifié !', severity: 'success' });
@@ -68,7 +67,7 @@ function Example() {
   };
 
   return (
-    <Container maxWidth="md" id="type">
+    <Box id="example">
       <Paper sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 10,
       }}
@@ -78,7 +77,7 @@ function Example() {
           <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
         ) : (
           <Box sx={{ maxWidth: '100%' }}>
-            <New newValue={{ data }} handleDataChange={handleDataChange} />
+            {/*<New newValue={{ data }} handleDataChange={handleDataChange} />*/}
             <TableContainer sx={{ mt: 4 }}>
               <Table size="small">
                 <TableHead>
@@ -89,14 +88,14 @@ function Example() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(({ id, name }) => (
+                  {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(({ id, name }) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
                       <TableCell>{id}</TableCell>
                       <TableCell sx={{ fontWeight: 'bold' }}>{name}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, data }} handleDataChange={handleDataChange} />
-                          <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
+                          {/*                          <Update updateValue={{ id, name, data }} handleDataChange={handleDataChange} />
+                          <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />*/}
                         </Box>
                       </TableCell>
                     </TableRow>
@@ -107,7 +106,7 @@ function Example() {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={data.length}
+              count={data ? data.length : 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -123,11 +122,11 @@ function Example() {
         onClose={() => setShowToast(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert onClose={() => setShowToast(false)} severity={toastMessage.severity} sx={{ width: '100%' }}>
-          {toastMessage.message}
+        <Alert onClose={() => setShowToast(false)} severity={toastMessage && toastMessage.severity} sx={{ width: '100%' }}>
+          {toastMessage && toastMessage.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </Box>
   );
 }
 

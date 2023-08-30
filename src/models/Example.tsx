@@ -1,7 +1,9 @@
 interface ExampleItem {
-  id: number; name: string;
+  id: number;
+
+  name: string;
 }
 
 interface ExampleItems extends Array<ExampleItem> {}
 
-export default { EnumServiceItems, EnumServiceItem };
+export type { ExampleItems, ExampleItem };

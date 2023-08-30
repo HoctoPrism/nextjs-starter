@@ -1,57 +1,66 @@
-import * as React from "react";
-import Head from "next/head";
-import { AppProps } from "next/app";
-import {
-  Experimental_CssVarsProvider as MaterialCssVarsProvider,
-  experimental_extendTheme as materialExtendTheme,
-  THEME_ID as MATERIAL_THEME_ID
-} from "@mui/material/styles";
 import '../../styles/App.scss';
+import * as React from 'react';
+import { useMemo, useState } from 'react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import Axios from 'axios';
 
-import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import type {} from "@mui/material/themeCssVarsAugmentation";
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
-import {lightTheme} from "@/utils/theme/lightTheme";
-import {darkTheme} from "@/utils/theme/darkTheme";
-import ModeToggle from "@/utils/theme/modeToggle";
+import { lightTheme } from '@/utils/theme/lightTheme';
+import { darkTheme } from '@/utils/theme/darkTheme';
 
-import { CacheProvider, EmotionCache } from "@emotion/react";
-import createEmotionCache from "../utils/createEmotionCache";
+import { Container, CssBaseline, PaletteMode } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ColorContext } from '@/utils/theme/colorContext';
 
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import {Container} from "@mui/joy";
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import createEmotionCache from '../utils/createEmotionCache';
 const clientSideEmotionCache = createEmotionCache();
 
 export interface MyAppProps extends AppProps {
-    emotionCache?: EmotionCache;
+  emotionCache?: EmotionCache;
 }
 
-const materialTheme = materialExtendTheme({
-  "colorSchemes": {
-    "light": lightTheme,
-    "dark": darkTheme
-  }
-});
+Axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 export default function MyApp(props: MyAppProps) {
-    const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-    return (
-        <CacheProvider value={emotionCache}>
-            <Head>
-                <meta name="viewport" content="initial-scale=1, width=device-width" />
-            </Head>
-            <MaterialCssVarsProvider defaultMode="system" theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-                <JoyCssVarsProvider defaultMode="system">
-                    <CssBaseline />
-                    <Header />
-                    <Container maxWidth="lg" className='main-container'>
-                        <Component {...pageProps} />
-                    </Container>
-                    <Footer />
-                </JoyCssVarsProvider>
-            </MaterialCssVarsProvider>
-        </CacheProvider>
+
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const [mode, setMode] = useState<PaletteMode>('light');
+
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode: PaletteMode) =>
+          prevMode === 'light' ? 'dark' : 'light',
         );
+      },
+    }),
+    [],
+  );
+
+  // @ts-ignore @todo fix this
+  const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode]);
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      <ColorContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline enableColorScheme>
+            <Header />
+            <Container maxWidth="lg" className='main-container'>
+              <Component {...pageProps} />
+            </Container>
+            <Footer />
+          </CssBaseline>
+        </ThemeProvider>
+      </ColorContext.Provider>
+    </CacheProvider>
+  );
 }

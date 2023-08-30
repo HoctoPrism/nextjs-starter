@@ -1,28 +1,32 @@
-import * as React from "react";
-import { IconButton } from "@mui/joy";
-import DarkMode from "@mui/icons-material/DarkMode";
-import LightMode from "@mui/icons-material/LightMode";
-
-import { useColorScheme as useMaterialColorScheme } from "@mui/material/styles";
-import { useColorScheme as useJoyColorScheme } from "@mui/joy/styles";
+import * as React from 'react';
+import DarkMode from '@mui/icons-material/DarkMode';
+import LightMode from '@mui/icons-material/LightMode';
+import { IconButton, PaletteMode } from '@mui/material';
+import { ColorContext } from '@/utils/theme/colorContext';
 const ModeToggle = () => {
+
   const [mounted, setMounted] = React.useState(false);
-    const { mode, setMode } = useMaterialColorScheme();
-    const { setMode: setJoyMode } = useJoyColorScheme();
+  const [mode, setMode] = React.useState<PaletteMode>('light');
+  const colorMode = React.useContext(ColorContext);
+
   React.useEffect(() => {
     setMounted(true);
   }, []);
+
   if (!mounted) {
+    // for server-side rendering
+    // learn more at https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
     return null;
   }
+
   return (
     <IconButton
       onClick={() => {
-        setMode(mode === "dark" ? "light" : "dark");
-        setJoyMode(mode === "dark" ? "light" : "dark");
+        setMode(mode === 'dark' ? 'light' : 'dark');
+        colorMode.toggleColorMode();
       }}
     >
-      {mode === "dark" ? <DarkMode /> : <LightMode />}
+      {mode === 'dark' ? <DarkMode /> : <LightMode />}
     </IconButton>
   );
 };
