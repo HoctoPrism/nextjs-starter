@@ -83,9 +83,7 @@ export const darkTheme = {
   shape: {
     borderRadius: 4,
   },
-  mixins: {
-    minHeight: 56,
-  },
+  minHeight: 56,
   typography: {
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     fontSize: 14,

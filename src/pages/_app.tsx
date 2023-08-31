@@ -1,6 +1,6 @@
 import '../../styles/App.scss';
 import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Axios from 'axios';
@@ -13,7 +13,7 @@ import { darkTheme } from '@/utils/theme/darkTheme';
 
 import { Container, CssBaseline, PaletteMode } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ColorContext } from '@/utils/theme/colorContext';
+import { ColorContext, setThemeToStorage } from '@/utils/theme/colorContext';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
@@ -29,20 +29,28 @@ Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 export default function MyApp(props: MyAppProps) {
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const [mode, setMode] = useState<PaletteMode>('light');
+  const [mode, setMode] = useState<PaletteMode | string | null>('light');
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode: PaletteMode) =>
+        setMode((prevMode: string | null) =>
           prevMode === 'light' ? 'dark' : 'light',
         );
+        setThemeToStorage();
       },
     }),
     [],
   );
 
-  // @ts-ignore @todo fix this
+  useEffect(() => {
+    // rend le thème persistant après reload
+    const checkMode = localStorage.getItem('theme');
+    if (checkMode) {
+      setMode(checkMode);
+    }
+  }, [mode]);
+
   const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode]);
 
   return (
