@@ -18,6 +18,7 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-console": "off",
     "@typescript-eslint/camelcase": "off",
+    "import/no-extraneous-dependencies": ["off", {"devDependencies": true}],
     "react/prop-types": ["error"],
     "indent": ["error", 2],
     "max-len": ["error", 150]
