@@ -94,8 +94,8 @@ function Example() {
                       <TableCell sx={{ fontWeight: 'bold' }}>{name}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          {/*                          <Update updateValue={{ id, name, data }} handleDataChange={handleDataChange} />
-                          <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />*/}
+                          {/*<Update updateValue={{ id, name, data }} handleDataChange={handleDataChange} />*/}
+                          <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>
                     </TableRow>
