@@ -4,38 +4,32 @@ import { useState } from 'react';
 import update from 'immutability-helper';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
+import { ExampleItem, ExampleItems } from '@/models/Example';
+import ToastMessage from '@/models/ToastMessage';
 
-function Update(props) {
-  const [id, setID] = useState('');
-  const [name, setName] = useState('');
-  const [oneType, setOneType] = useState(''); // get parking
-  const [editType, setShowEdit] = useState(false);
+function Update(props: {
+  updateValue: { id: number, name: string, data: ExampleItems };
+  handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
+}) {
+  const [id] = useState<number>();
+  const [name, setName] = useState<string>();
+  const [oneExample, setOneExample] =
+    useState<ExampleItem>({ id: props.updateValue.id, name: props.updateValue.name });
+  const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState({});
+  const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
 
   const { register, control, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: props.updateValue.name } });
 
-  const { data: session, status } = useSession();
-
-  const editTypeForm = async () => {
+  const editExampleForm = async () => {
     try {
-
-      // Ici on test si l'utilisateur est admin et a un token JWT, si il l'a pas il ne sera pas autorisé
-      let auth = {};
-      if (!session?.user?.token && session?.user?.role !== 'ROLE_ADMIN') {
-        return auth;
-      } else {
-        auth = { 'headers' : { 'Authorization':'Bearer' + session?.user?.token } };
-      }
-
-      const updatedPark = {
-        id: id ? id : parseInt(oneType.id),
-        name: name ? name : oneType.name,
+      const updatedPark: ExampleItem = {
+        id: id ? id : oneExample.id,
+        name: name ? name : oneExample.name,
       };
-      const res = await axios.patch('/api/types/' + oneType.id, { name }, auth);
+      const res = await axios.patch('/api/types/' + oneExample?.id, { name });
       if (res.status === 200) {
-        const foundIndex = props.updateValue.data.findIndex(x => x.id === oneType.id);
+        const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
         props.handleDataChange(data, 'edit');
         setShowEdit(false);
@@ -53,22 +47,22 @@ function Update(props) {
     <Button color='info' variant='contained' sx={{ mx: 2 }}
       onClick={() => {
         setShowEdit(true);
-        setOneType({ id: props.updateValue.id, name: props.updateValue.name });
+        setOneExample({ id: props.updateValue.id, name: props.updateValue.name });
       }}>
       <Edit/>
     </Button>
     <Modal
-      id="modal-type-container"
+      id="modal-example-container"
       className="modal-container"
       hideBackdrop
-      open={editType}
+      open={editExample}
       onClose={() => setShowEdit(false)}
-      aria-labelledby="edit-type-title"
+      aria-labelledby="edit-example-title"
       aria-describedby="child-modal-description"
     >
-      <Box className="modal-crud modal-type" sx={{ bgcolor: 'background.default' }}>
-        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="edit-type-title">Editer un type de voiture</Typography>
-        <form onSubmit={handleSubmit(editTypeForm)}>
+      <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
+        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="edit-example-title">Editer un example</Typography>
+        <form onSubmit={handleSubmit(editExampleForm)}>
           <FormControl>
             <Controller
               name="name"
@@ -106,8 +100,8 @@ function Update(props) {
       onClose={() => setShowToast(false)}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
-      <Alert onClose={() => setShowToast(false)} severity={toastMessage.severity} sx={{ width: '100%' }}>
-        {toastMessage.message}
+      <Alert onClose={() => setShowToast(false)} severity={toastMessage?.severity} sx={{ width: '100%' }}>
+        {toastMessage?.message}
       </Alert>
     </Snackbar>
   </Box>
