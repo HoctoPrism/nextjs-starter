@@ -6,7 +6,10 @@ import axios from 'axios';
 import { ExampleItems } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 
-function New(props: { newValue: { data: ExampleItems | null | undefined }; handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void }) {
+function New(props: {
+  newValue: { data: ExampleItems | null | undefined };
+  handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
+}) {
 
   const [name, setName] = useState('');
   const [newExample, setShowNew] = useState(false);
@@ -25,7 +28,7 @@ function New(props: { newValue: { data: ExampleItems | null | undefined }; handl
         };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{ id : tab.id, name: tab.name }] });
-        props.handleDataChange(data ,'');
+        props.handleDataChange(data, '');
         setName('');
         setToastMessage({ message: 'Example ajouté ! Vous pouvez en ajouter un autre', severity: 'success' });
         setShowToast(true);
