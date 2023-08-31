@@ -1,41 +1,33 @@
-import { Box, Button, FormControl, Modal, Snackbar, TextField, Typography, Alert, Input } from '@mui/material';
+import { Box, Button, FormControl, Modal, Snackbar, TextField, Typography, Alert } from '@mui/material';
 import { useState } from 'react';
 import update from 'immutability-helper';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
+import { ExampleItems } from '@/models/Example';
+import ToastMessage from '@/models/ToastMessage';
 
-function New(props) {
+function New(props: { newValue: { data: ExampleItems | null | undefined }; handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void }) {
 
-  const [id, setID] = useState('');
   const [name, setName] = useState('');
-  const [newType, setShowNew] = useState(false);
+  const [newExample, setShowNew] = useState(false);
   // Handle Toast event
   const [toast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState({});
+  const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
   const { register, control, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: '' } });
 
-  const { data: session, status } = useSession();
-
-  const newTypeForm = async () => {
+  const newExampleForm = async () => {
     try {
-
-      // Ici on test si l'utilisateur est admin et a un token JWT, si il l'a pas il ne sera pas autorisé
-      let auth = {};
-      if (!session?.user?.token && session?.user?.role !== 'ROLE_ADMIN') {
-        return auth;
-      } else {
-        auth = { 'headers' : { 'Authorization':'Bearer' + session?.user?.token } };
-      }
-
-      const res = await axios.post('/api/types', { name }, auth);
+      const res = await axios.post('/api/types', { name });
       if (res.status === 200) {
-        const tab = {};
+        const tab = {
+          id: 0,
+          name: '',
+        };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{ id : tab.id, name: tab.name }] });
-        props.handleDataChange(data);
+        props.handleDataChange(data ,'');
         setName('');
-        setToastMessage({ message: 'Type ajouté ! Vous pouvez en ajouter un autre', severity: 'success' });
+        setToastMessage({ message: 'Example ajouté ! Vous pouvez en ajouter un autre', severity: 'success' });
         setShowToast(true);
       } else {
         setToastMessage({ message: 'Une erreur est survenue', severity: 'error' });
@@ -48,17 +40,17 @@ function New(props) {
   return (<Box>
     <Button variant="contained" onClick={() => setShowNew(true)}>Ajouter</Button>
     <Modal
-      id="modal-type-container"
+      id="modal-example-container"
       className="modal-container"
       hideBackdrop
-      open={newType}
+      open={newExample}
       onClose={() => setShowNew(false)}
-      aria-labelledby="new-type-title"
+      aria-labelledby="new-example-title"
       aria-describedby="child-modal-description"
     >
-      <Box className="modal-crud modal-type" sx={{ bgcolor: 'background.default' }}>
-        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="new-type-title">Nouveau type de voiture</Typography>
-        <form onSubmit={handleSubmit(newTypeForm)}>
+      <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
+        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="new-example-title">Nouvel example </Typography>
+        <form onSubmit={handleSubmit(newExampleForm)}>
           <FormControl>
             <Controller
               name="name"
@@ -100,8 +92,8 @@ function New(props) {
       onClose={() => setShowToast(false)}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     >
-      <Alert onClose={() => setShowToast(false)} severity={toastMessage.severity} sx={{ width: '100%' }}>
-        {toastMessage.message}
+      <Alert onClose={() => setShowToast(false)} severity={toastMessage?.severity} sx={{ width: '100%' }}>
+        {toastMessage?.message}
       </Alert>
     </Snackbar>
   </Box>

@@ -55,7 +55,7 @@ function Example() {
     });
   }, []);
 
-  const handleDataChange = (dataChange: ExampleItems | null | undefined, message:string) => {
+  const handleDataChange = (dataChange: ExampleItems | undefined | null, message:string) => {
     setData(dataChange);
     if (message && message === 'edit') {
       setToastMessage({ message: 'Example modifié !', severity: 'success' });
@@ -77,7 +77,7 @@ function Example() {
           <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
         ) : (
           <Box sx={{ maxWidth: '100%' }}>
-            {/*<New newValue={{ data }} handleDataChange={handleDataChange} />*/}
+            <New newValue={{ data }} handleDataChange={handleDataChange} />
             <TableContainer sx={{ mt: 4 }}>
               <Table size="small">
                 <TableHead>
