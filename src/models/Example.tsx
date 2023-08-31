@@ -1,7 +1,7 @@
 interface ExampleItem {
-  id: number;
+  id?: number;
 
-  name: string;
+  name?: string;
 
   created_at?: string;
 
