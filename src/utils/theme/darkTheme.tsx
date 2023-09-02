@@ -16,20 +16,22 @@
     'contrastDefaultColor': 'dark',
 };*/
 
+import { darken, lighten } from '@mui/system';
+
 export const darkTheme = {
   palette: {
     type: 'dark',
     primary: {
-      main: '#d96161',
-      light: 'rgb(224, 128, 128)',
-      dark: 'rgb(151, 67, 67)',
-      contrastText: '#fff',
+      main: '#4a4c7e',
+      light: lighten('#4a4c7e', 0.5),
+      dark: darken('#4a4c7e', 0.1),
+      contrastText: 'rgba(236, 236, 252, 1)',
     },
     secondary: {
-      main: '#f4cfd5',
-      light: 'rgb(246, 216, 221)',
-      dark: 'rgb(170, 144, 149)',
-      contrastText: 'rgba(0, 0, 0, 0.87)',
+      main: '#6265ef',
+      light: lighten('#6265ef', 0.5),
+      dark: darken('#6265ef', 0.1),
+      contrastText: 'rgba(236, 236, 252, 1)',
     },
     warning: {
       main: '#ff9800',
@@ -41,7 +43,7 @@ export const darkTheme = {
       main: '#2196f3',
       light: 'rgb(77, 171, 245)',
       dark: 'rgb(23, 105, 170)',
-      contrastText: '#fff',
+      contrastText: 'rgba(236, 236, 252, 1)',
     },
     success: {
       main: '#4caf50',
@@ -67,14 +69,14 @@ export const darkTheme = {
     },
     divider: 'rgba(255, 255, 255, 0.12)',
     background: {
-      default: '#242c2f',
-      paper: '#394248',
+      default: '#0e1421',
+      paper: '#302d49',
     },
     text: {
-      primary: '#fff',
-      secondary: 'rgba(255, 255, 255, 0.7)',
-      disabled: 'rgba(255, 255, 255, 0.5)',
-      hint: 'rgba(255, 255, 255, 0.5)',
+      primary: 'rgba(236, 236, 252, 1)',
+      secondary: 'rgba(236, 236, 252, 0.7)',
+      disabled: 'rgba(236, 236, 252, 0.5)',
+      hint: 'rgba(236, 236, 252, 0.5)',
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -107,7 +109,7 @@ export const darkTheme = {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            backgroundColor: '#394248',
+            backgroundColor: '#302d49',
             color: '#fff',
           },
         },

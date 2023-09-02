@@ -13,8 +13,8 @@ export default function Header() {
       <AppBar className='header' id="navbar">
         <Box sx={{ m: 5, flexGrow: 1 }} component="div">NextJS-Starter</Box>
         <Box className="navbar">
-          <Link href='/'><Button color="secondary">Accueil</Button></Link>
-          <Link href='/example'><Button color="secondary">Example</Button></Link>
+          <Link href='/'><Button color="secondary" variant='contained' sx={{ mr: 2 }}>Accueil</Button></Link>
+          <Link href='/example'><Button color="secondary" variant='contained' sx={{ mr: 2 }}>Example</Button></Link>
           <ModeToggle/>
         </Box>
       </AppBar>

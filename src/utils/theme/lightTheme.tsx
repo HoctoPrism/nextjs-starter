@@ -16,38 +16,40 @@
     'contrastDefaultColor': 'light',
 };*/
 
+import { darken, lighten } from '@mui/system';
+
 export const lightTheme = {
   palette: {
     type: 'light',
     primary: {
-      main: '#d96161',
-      light: 'rgb(224, 128, 128)',
-      dark: 'rgb(151, 67, 67)',
-      contrastText: '#fff',
+      main: '#e56b70',
+      light: lighten('#e56b70', 0.5),
+      dark: darken('#e56b70', 0.1),
+      contrastText: 'rgba(236, 236, 252, 1)',
     },
     secondary: {
-      main: '#f4cfd5',
-      light: 'rgb(246, 216, 221)',
-      dark: 'rgb(170, 144, 149)',
-      contrastText: 'rgba(0, 0, 0, 0.87)',
+      main: '#e3b39e',
+      light: lighten('#e8ac88', 0.5),
+      dark: darken('#e8ac88', 0.1),
+      contrastText: '#0e1421',
     },
     warning: {
       main: '#ff9800',
       light: 'rgb(255, 172, 51)',
       dark: 'rgb(178, 106, 0)',
-      contrastText: 'rgba(0, 0, 0, 0.87)',
+      contrastText: '#0e1421',
     },
     info: {
       main: '#2196f3',
       light: 'rgb(77, 171, 245)',
       dark: 'rgb(23, 105, 170)',
-      contrastText: '#fff',
+      contrastText: 'rgba(236, 236, 252, 1)',
     },
     success: {
       main: '#4caf50',
       light: 'rgb(111, 191, 115)',
       dark: 'rgb(53, 122, 56)',
-      contrastText: 'rgba(0, 0, 0, 0.87)',
+      contrastText: '#0e1421',
     },
     grey: {
       50: '#fafafa',
@@ -67,14 +69,14 @@ export const lightTheme = {
     },
     divider: 'rgba(255, 255, 255, 0.12)',
     background: {
-      default: '#f5f5f5',
-      paper: '#eceff1',
+      default: 'rgb(245, 245, 255)',
+      paper: 'rgba(236, 236, 252, 1)',
     },
     text: {
-      primary: 'rgba(0,0,0,0.87)',
-      secondary: 'rgba(0, 0, 0, 0.54)',
-      disabled: 'rgba(0, 0, 0, 0.38)',
-      hint: 'rgba(0, 0, 0, 0.38)',
+      primary: '#0e1421',
+      secondary: lighten('#0e1421', 0.8),
+      disabled: lighten('#0e1421', 0.38),
+      hint: lighten('#0e1421', 0.38),
     },
     contrastThreshold: 3,
     tonalOffset: 0.2,
@@ -98,7 +100,7 @@ export const lightTheme = {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            color: 'rgba(0, 0, 0, 0.38)',
+            color: lighten('#0e1421', 0.38),
           },
         },
       },
