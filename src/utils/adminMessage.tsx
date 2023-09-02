@@ -1,22 +1,22 @@
 import { Alert, Snackbar, AlertColor } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-function AdminMessage({ adminMessage }: any) {
+function AdminMessage(props: { adminMessage: string }) {
   const [toast, setShowToast] = useState(false);
   const [severityToast, setSeverityToast] = useState<AlertColor>();
   const [messageToast, setMessageToast] = useState('');
 
   useEffect(() => {
-    if (adminMessage === 'unauthorizedRole') {
+    if (props.adminMessage === 'unauthorizedRole') {
       setMessageToast('accès refusé');
       setSeverityToast('error');
       setShowToast(true);
-    } else if (adminMessage === 'alreadyLogged') {
+    } else if (props.adminMessage === 'alreadyLogged') {
       setMessageToast('Vous êtes déjà connecté');
       setSeverityToast('info');
       setShowToast(true);
     }
-  }, [adminMessage]);
+  }, [props.adminMessage]);
 
   return (
     <Snackbar
