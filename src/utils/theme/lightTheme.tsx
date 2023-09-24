@@ -95,6 +95,15 @@ export const lightTheme = {
     fontWeightBold: 700,
     htmlFontSize: 16,
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
   components: {
     MuiButton: {
       styleOverrides: {
