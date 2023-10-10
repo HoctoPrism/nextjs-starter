@@ -44,7 +44,7 @@ function Update(props: {
   };
 
   return (<Box >
-    <Button color='info' variant='contained' sx={{ mx: 2 }}
+    <Button color='secondary' variant='contained' sx={{ mx: 2 }}
       onClick={() => {
         setShowEdit(true);
         setOneExample({ id: props.updateValue.id, name: props.updateValue.name });
