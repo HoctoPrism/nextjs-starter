@@ -12,6 +12,7 @@ import {
   TableRow,
   Typography,
   Alert,
+  CircularProgress,
 } from '@mui/material';
 import axios from 'axios';
 import defineTitle from '@/utils/defineTitle';
@@ -74,7 +75,10 @@ function Example() {
       >
         <Typography variant="h3" sx={{ textAlign: 'center' }} gutterBottom>Example</Typography>
         {loading ? (
-          <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
+          <>
+            <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
+            <CircularProgress />
+          </>
         ) : (
           <Box sx={{ maxWidth: '100%' }}>
             <New newValue={{ data }} handleDataChange={handleDataChange} />
