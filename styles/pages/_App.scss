@@ -23,15 +23,11 @@
   }
 }
 
-.f-r-c-e {
+.f-r-fe-c {
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: end;
-
-  & label {
-    margin: 0;
-  }
 }
 
 .f-r-c-c {
@@ -55,7 +51,7 @@
   align-items: flex-end;
 }
 
-.f-c-sb-s {
+.f-c-sb-fs {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
