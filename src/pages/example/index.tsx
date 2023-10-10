@@ -12,7 +12,6 @@ import {
   TableRow,
   Typography,
   Alert,
-  CircularProgress,
 } from '@mui/material';
 import axios from 'axios';
 import defineTitle from '@/utils/defineTitle';
@@ -21,6 +20,7 @@ import New from '@/components/form/type/new';
 import Update from '@/components/form/type/update';
 import Delete from '@/components/form/type/delete';
 import ToastMessage from '@/models/ToastMessage';
+import DashboardGridSkeleton from '@/utils/skeletons/DashboardGridSkeleton';
 
 function Example() {
   defineTitle('Liste des examples');
@@ -75,10 +75,7 @@ function Example() {
       >
         <Typography variant="h3" sx={{ textAlign: 'center' }} gutterBottom>Example</Typography>
         {loading ? (
-          <>
-            <Typography variant="h5" sx={{ textAlign: 'center' }} gutterBottom>Chargement...</Typography>
-            <CircularProgress />
-          </>
+          <DashboardGridSkeleton />
         ) : (
           <Box sx={{ maxWidth: '100%' }}>
             <New newValue={{ data }} handleDataChange={handleDataChange} />

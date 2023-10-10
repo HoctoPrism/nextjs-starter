@@ -8,9 +8,7 @@ defineTitle('Home');
 const Home: NextPage = () => {
   return (
     <Box>
-      <Typography variant="h2" textAlign="center">
-                Hello, World
-      </Typography>
+      <Typography variant="h2" textAlign="center">Hello, World</Typography>
     </Box>
   );
 };
