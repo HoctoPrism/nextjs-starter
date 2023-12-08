@@ -13,45 +13,38 @@ import { darkTheme } from '@/utils/theme/darkTheme';
 
 import { Container, CssBaseline, PaletteMode } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ColorContext, setThemeToStorage } from '@/utils/theme/colorContext';
+import { ColorContext } from '@/utils/theme/colorContext';
 
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
 const clientSideEmotionCache = createEmotionCache();
+import Cookies from 'js-cookie';
+import { parse } from 'cookie';
 
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
+  initialTheme: string | PaletteMode;
 }
 
 Axios.defaults.baseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-export default function MyApp(props: MyAppProps) {
+export default function MyApp({ Component, emotionCache = clientSideEmotionCache, initialTheme, pageProps } : MyAppProps) {
 
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const [mode, setMode] = useState<PaletteMode | string | null>('light');
+  const [theme, setTheme] = useState(initialTheme);
 
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode: string | null) =>
-          prevMode === 'light' ? 'dark' : 'light',
-        );
-        setThemeToStorage();
-      },
-    }),
-    [],
+  const colorMode = useMemo(() => ({
+    toggleColorMode: () => {
+      setTheme((prevMode) => prevMode === 'light' ? 'dark' : 'light');
+    },
+  }), [],
   );
 
   useEffect(() => {
-    // rend le thème persistant après reload
-    const checkMode = localStorage.getItem('theme');
-    if (checkMode) {
-      setMode(checkMode);
-    }
-  }, [mode]);
+    Cookies.set('theme', theme);
+  }, [theme]);
 
-  const theme = useMemo(() => createTheme(mode === 'light' ? lightTheme : darkTheme), [mode]);
+  const selectedTheme = useMemo(() => createTheme(theme === 'light' ? lightTheme : darkTheme), [theme]);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -59,7 +52,7 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ColorContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={selectedTheme}>
           <CssBaseline enableColorScheme>
             <Header />
             <Container maxWidth="lg" className='main-container'>
@@ -72,3 +65,14 @@ export default function MyApp(props: MyAppProps) {
     </CacheProvider>
   );
 }
+
+MyApp.getInitialProps = async ({ ctx }) => {
+  // Parse cookies from the request
+  const themeCookie = ctx.req ? ctx.req.headers.cookie : '';
+  const cookies = themeCookie ? parse(themeCookie) : {};
+
+  // Fallback to 'light' theme if no theme cookie is present
+  const initialTheme = cookies.theme || 'light';
+
+  return { initialTheme };
+};

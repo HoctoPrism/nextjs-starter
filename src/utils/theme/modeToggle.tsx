@@ -14,8 +14,6 @@ const ModeToggle = () => {
   }, []);
 
   if (!mounted) {
-    // for server-side rendering
-    // learn more at https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
     return null;
   }
 
