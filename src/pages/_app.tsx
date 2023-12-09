@@ -41,7 +41,7 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
   );
 
   useEffect(() => {
-    Cookies.set('theme', theme);
+    Cookies.set('theme', theme, { sameSite: 'lax' });
   }, [theme]);
 
   const selectedTheme = useMemo(() => createTheme(theme === 'light' ? lightTheme : darkTheme), [theme]);
