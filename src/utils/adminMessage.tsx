@@ -6,15 +6,17 @@ function AdminMessage(props: { adminMessage: string }) {
   const [severityToast, setSeverityToast] = useState<AlertColor>();
   const [messageToast, setMessageToast] = useState('');
 
+  const showMessage = (message: string, severity: AlertColor) => {
+    setMessageToast(message);
+    setSeverityToast(severity);
+    setShowToast(true);
+  };
+
   useEffect(() => {
     if (props.adminMessage === 'unauthorizedRole') {
-      setMessageToast('accès refusé');
-      setSeverityToast('error');
-      setShowToast(true);
+      showMessage('accès refusé', 'error');
     } else if (props.adminMessage === 'alreadyLogged') {
-      setMessageToast('Vous êtes déjà connecté');
-      setSeverityToast('info');
-      setShowToast(true);
+      showMessage('Vous êtes déjà connecté', 'info');
     }
   }, [props.adminMessage]);
 

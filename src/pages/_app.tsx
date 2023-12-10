@@ -66,7 +66,15 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
   );
 }
 
-MyApp.getInitialProps = async ({ ctx }) => {
+/**
+ * Retrieves the initial props for the MyApp component.
+ *
+ * @param {object} context - The context object containing information about the current request.
+ * @returns {Promise<object>} - A promise that resolves to an object containing the initial props.
+ */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+MyApp.getInitialProps = async ({ ctx }: object): Promise<object> => {
   // Parse cookies from the request
   const themeCookie = ctx.req ? ctx.req.headers.cookie : '';
   const cookies = themeCookie ? parse(themeCookie) : {};
