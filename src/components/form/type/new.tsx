@@ -6,6 +6,7 @@ import { ExampleItems } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 import TextFormType from '@/utils/formTypes/TextFormType';
 import { useForm } from 'react-hook-form';
+import SwitchFormType from '@/utils/formTypes/SwitchFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -13,21 +14,23 @@ function New(props: {
 }) {
 
   const [name, setName] = useState('');
+  const [active, setActive] = useState(false);
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
   const [toast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
   const { register, control, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: '' } });
 
-  function handleNameChange(nameValue: string) { setName(nameValue); }
+  function handleValueChange(nameValue: string) { setName(nameValue); }
+  function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
 
   const newExampleForm = async () => {
     try {
-      const res = await axios.post('/api/examples', { name });
+      const res = await axios.post('/api/examples', { name, active });
       if (res.status === 200) {
-        const tab = { id: 0, name: '' };
+        const tab = { id: 0, name: '', active: 0 };
         await Object.assign(tab, res.data.data);
-        const data = update(props.newValue.data, { $push: [{ id : tab.id, name: tab.name }] });
+        const data = update(props.newValue.data, { $push: [{ id : tab.id, name: tab.name, active: tab.active }] });
         props.handleDataChange(data, '');
         setName('');
         setToastMessage({ message: 'Example ajouté ! Vous pouvez en ajouter un autre', severity: 'success' });
@@ -52,15 +55,17 @@ function New(props: {
       aria-describedby="child-modal-description"
     >
       <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
-        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="new-example-title">Nouvel example </Typography>
+        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="new-example-title">Nouvel example</Typography>
 
         <form onSubmit={handleSubmit(newExampleForm)}>
 
           <TextFormType
-            inputName={'name'}
+            inputName='Name'
             config={{ required: 'Ce champ est requis',  minLength: { value: 5, message: 'Longueur minimale de 5 caractères' } }}
-            control={control} errors={errors} register={register} handleNameChange={handleNameChange}
+            control={control} errors={errors} register={register} handleValueChange={handleValueChange}
           />
+
+          <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange} control={control} errors={errors} register={register} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

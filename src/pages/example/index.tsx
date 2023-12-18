@@ -21,6 +21,8 @@ import Update from '@/components/form/type/update';
 import Delete from '@/components/form/type/delete';
 import ToastMessage from '@/models/ToastMessage';
 import DashboardGridSkeleton from '@/utils/skeletons/DashboardGridSkeleton';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 function Example() {
   defineTitle('Liste des examples');
@@ -38,8 +40,7 @@ function Example() {
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent) => {
-    const { name, index } = (event.target as HTMLButtonElement).dataset;
-    console.log(name, index);
+    const { name } = (event.target as HTMLButtonElement).dataset;
     setRowsPerPage(+{ name });
     setPage(0);
   };
@@ -85,17 +86,35 @@ function Example() {
                   <TableRow>
                     <TableCell key={1}>ID</TableCell>
                     <TableCell key={2}>Nom</TableCell>
-                    <TableCell key={3} align="right">Actions</TableCell>
+                    <TableCell key={3}>Datetime</TableCell>
+                    <TableCell key={4}>Slider</TableCell>
+                    <TableCell key={5}>Switch</TableCell>
+                    <TableCell key={6}>Rate</TableCell>
+                    <TableCell key={7}>Select</TableCell>
+                    <TableCell key={8}>Radio</TableCell>
+                    <TableCell key={9}>Checkbox</TableCell>
+                    <TableCell key={10}>Autocomplete</TableCell>
+                    <TableCell key={11} align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(({ id, name }) => (
+                  {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
+                    { id, name, datetime, slider, active, rate, select, radio, checkbox, autocomplete },
+                  ) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
                       <TableCell>{id}</TableCell>
                       <TableCell sx={{ fontWeight: 'bold' }}>{name}</TableCell>
+                      <TableCell>{datetime}</TableCell>
+                      <TableCell>{slider}</TableCell>
+                      <TableCell>{active ? <CheckIcon/> : <CloseIcon/>}</TableCell>
+                      <TableCell>{rate}</TableCell>
+                      <TableCell>{select}</TableCell>
+                      <TableCell>{radio}</TableCell>
+                      <TableCell>{checkbox}</TableCell>
+                      <TableCell>{autocomplete}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{ id, name, active, data }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>
