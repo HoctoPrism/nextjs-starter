@@ -1,11 +1,12 @@
-import { Box, Button, FormControl, Modal, Snackbar, TextField, Typography, Alert } from '@mui/material';
+import { Box, Button, Modal, Snackbar, Typography, Alert } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { useState } from 'react';
 import update from 'immutability-helper';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ExampleItem, ExampleItems } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
+import TextFormType from '@/utils/formTypes/TextFormType';
 
 function Update(props: {
   updateValue: { id: number, name: string, data: ExampleItems };
@@ -43,6 +44,8 @@ function Update(props: {
     }
   };
 
+  function handleNameChange(nameValue: string) { setName(nameValue); }
+
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}
       onClick={() => {
@@ -63,34 +66,18 @@ function Update(props: {
       <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="edit-example-title">Editer un example</Typography>
         <form onSubmit={handleSubmit(editExampleForm)}>
-          <FormControl>
-            <Controller
-              name="name"
-              control={control}
-              render={() => (
-                <TextField
-                  {...register(
-                    'name',
-                    {
-                      required: 'Ce champ est requis',
-                    },
-                  )}
-                  onChange={(e) => setName(e.target.value)}
-                  style={{ width: 400, height: 50 }}
-                  label="Nom"
-                  variant="standard"
-                  defaultValue={name}
-                />
-              )}
-            />
-            {errors.name ? (
-              <Alert sx={{ mt:2, p:0, pl:2 }} severity="error">{errors.name?.message}</Alert>
-            ) : ''}
-            <Box className="action-button">
-              <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
-              <Button variant="outlined" onClick={() => setShowEdit(false)}>Fermer</Button>
-            </Box>
-          </FormControl>
+
+          <TextFormType
+            inputName={'name'}
+            config={{ required: 'Ce champ est requis',  minLength: { value: 5, message: 'Longueur minimale de 5 caractères' } }}
+            control={control} errors={errors} register={register} handleNameChange={handleNameChange} defaultValue={props.updateValue.name}
+          />
+
+          <Box className="action-button">
+            <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
+            <Button variant="outlined" onClick={() => setShowEdit(false)}>Fermer</Button>
+          </Box>
+
         </form>
       </Box>
     </Modal>
