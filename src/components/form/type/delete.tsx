@@ -19,7 +19,7 @@ function Delete(props: {
   const deleteExample = async (e: React.MouseEvent | null) => {
     e?.preventDefault();
     try {
-      const res = await axios.delete('/api/types/' + oneExample?.id);
+      const res = await axios.delete('/api/examples/' + oneExample?.id);
       if (res.status === 200) {
         const foundIndex = props.deleteValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.deleteValue.data, { $splice: [[foundIndex, 1]] });

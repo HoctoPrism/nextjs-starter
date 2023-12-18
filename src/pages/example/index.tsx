@@ -45,7 +45,7 @@ function Example() {
   };
 
   useEffect(() => {
-    axios.get('/api/types').then( async (actualData) => {
+    axios.get('/api/examples').then( async (actualData) => {
       actualData = actualData.data;
       setData(actualData.data);
       setLoading(true);

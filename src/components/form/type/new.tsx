@@ -23,7 +23,7 @@ function New(props: {
 
   const newExampleForm = async () => {
     try {
-      const res = await axios.post('/api/types', { name });
+      const res = await axios.post('/api/examples', { name });
       if (res.status === 200) {
         const tab = { id: 0, name: '' };
         await Object.assign(tab, res.data.data);

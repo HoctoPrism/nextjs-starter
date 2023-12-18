@@ -28,7 +28,7 @@ function Update(props: {
         id: id ? id : oneExample.id,
         name: name ? name : oneExample.name,
       };
-      const res = await axios.patch('/api/types/' + oneExample?.id, { name });
+      const res = await axios.patch('/api/examples/' + oneExample?.id, { name });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
