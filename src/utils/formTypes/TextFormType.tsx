@@ -1,6 +1,5 @@
 import { FormControl, TextField, Alert } from '@mui/material';
 import { Controller, Control, FieldErrors, UseFormRegister } from 'react-hook-form';
-import { useState } from 'react';
 
 function TextFormType(props: {
   inputName: 'name',
