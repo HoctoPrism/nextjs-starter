@@ -5,9 +5,10 @@ function RadioPickerFormType(props: {
   handleRadioChange: (radioValue: string) => void,
   defaultValue?: string | undefined,
   sx?: object
+  color?: 'primary' | 'secondary'
 }) {
 
-  const { inputName, handleRadioChange, defaultValue, sx } = props;
+  const { inputName, handleRadioChange, defaultValue, sx, color } = props;
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLInputElement>) {
     handleRadioChange(e.target.value);
@@ -23,6 +24,7 @@ function RadioPickerFormType(props: {
       name={`radio-buttons-group-${inputName}`}
       onChange={(e) => setValueAndRefreshToParent(e)}
       sx={sx}
+      color={color}
     >
       {fakeData.map((data, index) => {
         return <FormControlLabel key={index} value={data} control={<Radio />} label={data} />;

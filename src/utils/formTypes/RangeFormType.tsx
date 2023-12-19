@@ -14,8 +14,9 @@ function RangeFormType(props: {
   const [value, setValue] = useState<number[] | string >(defaultValue);
 
   function setValueAndRefreshToParent(e: Event) {
-    setValue(e?.target?.value);
-    handleRangeChange(e?.target?.value);
+    const target = e.target as HTMLInputElement;
+    setValue(target?.value);
+    handleRangeChange(target.value as unknown as number[]);
   }
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function RangeFormType(props: {
   return <FormControl>
     <Typography gutterBottom>{inputName}</Typography>
     <Slider
-      value={value}
+      value={parseInt(value as string)}
       getAriaLabel={() => inputName}
       valueLabelDisplay="auto"
       size={size}

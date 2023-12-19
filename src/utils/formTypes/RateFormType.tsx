@@ -15,7 +15,8 @@ function RateFormType(props: {
   const { inputName, handleRateChange, defaultValue, precision, sx, color } = props;
 
   function setValueAndRefreshToParent(e: React.SyntheticEvent) {
-    handleRateChange(Number(e.target.value));
+    const target = e.target as HTMLInputElement;
+    handleRateChange(Number(target?.value));
   }
 
   return <FormControl>
