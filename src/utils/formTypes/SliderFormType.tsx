@@ -1,4 +1,4 @@
-import { FormControl, Slider } from '@mui/material';
+import { FormControl, Slider, Typography } from '@mui/material';
 
 function SliderFormType(props: {
   inputName: string,
@@ -17,6 +17,7 @@ function SliderFormType(props: {
   }
 
   return <FormControl>
+    <Typography gutterBottom>{inputName}</Typography>
     <Slider
       defaultValue={defaultValue}
       aria-label={inputName}
