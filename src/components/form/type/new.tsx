@@ -7,6 +7,7 @@ import ToastMessage from '@/models/ToastMessage';
 import TextFormType from '@/utils/formTypes/TextFormType';
 import { useForm } from 'react-hook-form';
 import SwitchFormType from '@/utils/formTypes/SwitchFormType';
+import RateFormType from '@/utils/formTypes/RateFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -15,22 +16,29 @@ function New(props: {
 
   const [name, setName] = useState('');
   const [active, setActive] = useState(false);
+  const [rating, setRating] = useState<null | string | number>(null);
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
   const [toast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
-  const { register, control, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: '' } });
+  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: '' } });
 
   function handleValueChange(nameValue: string) { setName(nameValue); }
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
+  function handleRateChange(ratingValue: string | null) { setRating(ratingValue); }
 
   const newExampleForm = async () => {
     try {
-      const res = await axios.post('/api/examples', { name, active });
+      const res = await axios.post('/api/examples', { name, active, rating });
       if (res.status === 200) {
-        const tab = { id: 0, name: '', active: 0 };
+        const tab = { id: 0, name: '', active: 0, rating: null };
         await Object.assign(tab, res.data.data);
-        const data = update(props.newValue.data, { $push: [{ id : tab.id, name: tab.name, active: tab.active }] });
+        const data = update(props.newValue.data, { $push: [{
+          id : tab.id,
+          name: tab.name,
+          active: tab.active,
+          rating: tab.rating,
+        }] });
         props.handleDataChange(data, '');
         setName('');
         setToastMessage({ message: 'Example ajouté ! Vous pouvez en ajouter un autre', severity: 'success' });
@@ -62,10 +70,11 @@ function New(props: {
           <TextFormType
             inputName='Name'
             config={{ required: 'Ce champ est requis',  minLength: { value: 5, message: 'Longueur minimale de 5 caractères' } }}
-            control={control} errors={errors} register={register} handleValueChange={handleValueChange}
+            errors={errors} register={register} handleValueChange={handleValueChange}
           />
 
-          <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange} control={control} errors={errors} register={register} />
+          <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange} errors={errors} register={register} />
+          <RateFormType inputName={'Rating'} handleRateChange={handleRateChange} defaultValue={0} precision={0.5} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

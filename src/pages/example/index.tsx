@@ -99,7 +99,7 @@ function Example() {
                 </TableHead>
                 <TableBody>
                   {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
-                    { id, name, datetime, slider, active, rate, select, radio, checkbox, autocomplete },
+                    { id, name, datetime, slider, active, rating, select, radio, checkbox, autocomplete },
                   ) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
                       <TableCell>{id}</TableCell>
@@ -107,14 +107,14 @@ function Example() {
                       <TableCell>{datetime}</TableCell>
                       <TableCell>{slider}</TableCell>
                       <TableCell>{active ? <CheckIcon/> : <CloseIcon/>}</TableCell>
-                      <TableCell>{rate}</TableCell>
+                      <TableCell>{rating}</TableCell>
                       <TableCell>{select}</TableCell>
                       <TableCell>{radio}</TableCell>
                       <TableCell>{checkbox}</TableCell>
                       <TableCell>{autocomplete}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, active, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{ id, name, active, rating, data }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>

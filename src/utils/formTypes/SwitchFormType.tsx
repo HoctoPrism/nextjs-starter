@@ -1,21 +1,26 @@
 import { FormControl, Alert, Switch, FormControlLabel } from '@mui/material';
-import { Controller, Control, FieldErrors, UseFormRegister } from 'react-hook-form';
+import { Controller, FieldErrors, UseFormRegister, useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 function SwitchFormType(props: {
   inputName: string,
   config?: object,
   handleSwitchChange: (active: boolean) => void,
-  control: Control<{ name: string; }>,
   errors: FieldErrors<{ name: string; }>,
   register: UseFormRegister<{ name: string; }>
-  defaultValue?: string
+  defaultValue?: boolean
 }) {
 
-  const { inputName, config, handleSwitchChange, control, errors, register, defaultValue } = props;
+  const { control } = useForm();
+  const { inputName, config, handleSwitchChange, errors, register, defaultValue } = props;
+  const [switchValue, setSwitchValue] = useState(defaultValue);
 
-  function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
-    handleSwitchChange(e.target.value === 'on');
+  function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLInputElement>) {
+    setSwitchValue(e.target.checked);
+    handleSwitchChange(e.target.checked);
   }
+
+  const defaultValueSwitch = defaultValue ? 'on' : 'off';
 
   return <FormControl>
     <Controller
@@ -26,7 +31,8 @@ function SwitchFormType(props: {
           <Switch
             {...register(inputName as unknown as 'name', config)}
             onChange={(e) => setValueAndRefreshToParent(e)}
-            defaultValue={defaultValue}
+            defaultValue={defaultValueSwitch}
+            checked={switchValue}
           />
         } label={inputName}
         />

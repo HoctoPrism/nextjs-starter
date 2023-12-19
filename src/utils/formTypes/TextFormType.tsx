@@ -1,17 +1,17 @@
 import { FormControl, TextField, Alert } from '@mui/material';
-import { Controller, Control, FieldErrors, UseFormRegister } from 'react-hook-form';
+import { Controller, FieldErrors, UseFormRegister, useForm } from 'react-hook-form';
 
 function TextFormType(props: {
   inputName: string,
   config : object,
   handleValueChange: (name: string) => void,
-  control : Control<{ name: string; }>,
   errors: FieldErrors<{ name: string; }>,
   register: UseFormRegister<{ name: string; }>
   defaultValue?: string
 }) {
 
-  const { inputName, config, handleValueChange, control, errors, register, defaultValue } = props;
+  const { control } = useForm();
+  const { inputName, config, handleValueChange, errors, register, defaultValue } = props;
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     handleValueChange(e.target.value);

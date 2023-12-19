@@ -4,7 +4,7 @@ interface ExampleItem {
   datetime?: string;
   slider?: number;
   active: boolean;
-  rate?: number;
+  rating: number;
   select?: string;
   radio?: string;
   checkbox?: string;

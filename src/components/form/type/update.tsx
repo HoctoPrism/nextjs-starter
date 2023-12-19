@@ -8,30 +8,38 @@ import { ExampleItem, ExampleItems } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 import TextFormType from '@/utils/formTypes/TextFormType';
 import SwitchFormType from '@/utils/formTypes/SwitchFormType';
+import RateFormType from '@/utils/formTypes/RateFormType';
 
 function Update(props: {
-  updateValue: { id: number, name: string, active: boolean, data: ExampleItems };
+  updateValue: { id: number, name: string, active: boolean, rating: number, data: ExampleItems };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
 }) {
   const [id] = useState<number>();
-  const [name, setName] = useState<string>();
-  const [active, setActive] = useState<boolean>(false);
+  const [name, setName] = useState<string>(props.updateValue.name);
+  const [active, setActive] = useState<boolean>(props.updateValue.active);
+  const [rating, setRating] = useState<number>(props.updateValue.rating);
   const [oneExample, setOneExample] =
-    useState<ExampleItem>({ id: props.updateValue.id, name: props.updateValue.name, active: props.updateValue.active });
+    useState<ExampleItem>({
+      id: props.updateValue.id,
+      name: props.updateValue.name,
+      active: props.updateValue.active,
+      rating: props.updateValue.rating,
+    });
   const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
 
-  const { register, control, handleSubmit, formState: { errors } } = useForm({ defaultValues: { name: props.updateValue.name } });
+  const { register, handleSubmit, formState: { errors } } = useForm( { defaultValues : { name: props.updateValue.name } });
 
   const editExampleForm = async () => {
     try {
       const updatedPark: ExampleItem = {
         id: id ? id : oneExample.id,
         name: name ? name : oneExample.name,
-        active: active ? active : oneExample.active,
+        active: active,
+        rating: rating ? rating : oneExample.rating,
       };
-      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active });
+      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
@@ -49,12 +57,18 @@ function Update(props: {
 
   function handleValueChange(nameValue: string) { setName(nameValue); }
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
+  function handleRateChange(ratingValue: number) { setRating(ratingValue); }
 
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}
       onClick={() => {
         setShowEdit(true);
-        setOneExample({ id: props.updateValue.id, name: props.updateValue.name, active: props.updateValue.active });
+        setOneExample({
+          id: props.updateValue.id,
+          name: props.updateValue.name,
+          active: props.updateValue.active,
+          rating: props.updateValue.rating,
+        });
       }}>
       <Edit/>
     </Button>
@@ -74,10 +88,16 @@ function Update(props: {
           <TextFormType
             inputName={'name'}
             config={{ required: 'Ce champ est requis',  minLength: { value: 5, message: 'Longueur minimale de 5 caractères' } }}
-            control={control} errors={errors} register={register} handleValueChange={handleValueChange} defaultValue={props.updateValue.name}
+            errors={errors} register={register} handleValueChange={handleValueChange} defaultValue={props.updateValue.name}
           />
 
-          <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange} control={control} errors={errors} register={register} />
+          <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange}
+            errors={errors} register={register} defaultValue={props.updateValue.active}
+          />
+
+          <RateFormType inputName='Rating' handleRateChange={handleRateChange}
+            defaultValue={parseFloat(String(props.updateValue.rating))} precision={0.5}
+          />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
