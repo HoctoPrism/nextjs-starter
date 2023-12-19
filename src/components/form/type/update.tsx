@@ -12,6 +12,7 @@ import RateFormType from '@/utils/formTypes/RateFormType';
 import DatePickerFormType from '@/utils/formTypes/DatePickerFormType';
 import SliderFormType from '@/utils/formTypes/SliderFormType';
 import RangeFormType from '@/utils/formTypes/RangeFormType';
+import RadioPickerFormType from '@/utils/formTypes/RadioPickerFormType';
 
 function Update(props: {
   updateValue: {
@@ -22,6 +23,7 @@ function Update(props: {
     datetime: Date | undefined,
     slider: number | undefined,
     range: number[] | string | undefined
+    radio?: string
     data: ExampleItems
   };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
@@ -33,6 +35,7 @@ function Update(props: {
   const [date, setDate] = useState<Date | undefined>(props.updateValue.datetime);
   const [slider, setSlider] = useState<number | undefined>(props.updateValue.slider);
   const [range, setRange] = useState<number[] | string | undefined>(props.updateValue.range);
+  const [radio, setRadio] = useState<string>();
 
   const [oneExample, setOneExample] =
     useState<ExampleItem>({
@@ -43,6 +46,7 @@ function Update(props: {
       datetime: props.updateValue.datetime,
       slider: props.updateValue.slider,
       range: props.updateValue.range,
+      radio: props.updateValue.radio,
     });
   const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
@@ -60,8 +64,9 @@ function Update(props: {
         datetime: date ? date : oneExample.datetime,
         slider: slider ? slider : oneExample.slider,
         range: range ? range : oneExample.range,
+        radio: radio ? radio : oneExample.radio,
       };
-      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating, datetime: date, slider, range });
+      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating, datetime: date, slider, range, radio });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
@@ -83,7 +88,7 @@ function Update(props: {
   function handleDateChange(dateValue: Date) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
   function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
-
+  function handleRadioChange(radioValue: string) { setRadio(radioValue); }
 
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}
@@ -95,6 +100,9 @@ function Update(props: {
           active: props.updateValue.active,
           rating: props.updateValue.rating,
           datetime: props.updateValue.datetime,
+          slider: props.updateValue.slider,
+          range: props.updateValue.range,
+          radio: props.updateValue.radio,
         });
       }}>
       <Edit/>
@@ -129,6 +137,7 @@ function Update(props: {
           <DatePickerFormType inputName='Date' handleDateChange={handleDateChange} defaultValue={props.updateValue.datetime}/>
           <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' defaultValue={props.updateValue.slider}/>
           <RangeFormType inputName='Slider' handleRangeChange={handleRangeChange} size='medium' defaultValue={props.updateValue.range ?? [10, 30]} />
+          <RadioPickerFormType inputName='Radio' handleRadioChange={handleRadioChange} defaultValue={props.updateValue.radio} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

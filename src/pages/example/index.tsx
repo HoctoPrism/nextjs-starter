@@ -116,7 +116,9 @@ function Example() {
                       <TableCell>{range}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, active, rating, datetime, slider, range, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{
+                            id, name, active, rating, datetime, slider, range, radio, data,
+                          }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>

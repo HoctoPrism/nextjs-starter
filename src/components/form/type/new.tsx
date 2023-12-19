@@ -11,6 +11,7 @@ import RateFormType from '@/utils/formTypes/RateFormType';
 import DateTimePickerFormType from '@/utils/formTypes/DateTimePickerFormType';
 import SliderFormType from '@/utils/formTypes/SliderFormType';
 import RangeFormType from '@/utils/formTypes/RangeFormType';
+import RadioPickerFormType from '@/utils/formTypes/RadioPickerFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -23,6 +24,7 @@ function New(props: {
   const [date, setDate] = useState<Date | null>(null);
   const [slider, setSlider] = useState<number>();
   const [range, setRange] = useState<number[]>();
+  const [radio, setRadio] = useState<string>();
 
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
@@ -36,12 +38,13 @@ function New(props: {
   function handleDateChange(dateValue: Date) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
   function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
+  function handleRadioChange(radioValue: string) { setRadio(radioValue); }
 
   const newExampleForm = async () => {
     try {
-      const res = await axios.post('/api/examples', { name, active, rating, datetime: date, slider, range });
+      const res = await axios.post('/api/examples', { name, active, rating, datetime: date, slider, range, radio });
       if (res.status === 200) {
-        const tab = { id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null };
+        const tab = { id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{
           id : tab.id,
@@ -51,6 +54,7 @@ function New(props: {
           datetime: tab.datetime,
           slider: tab.slider,
           range: tab.range,
+          radio: tab.radio,
         }] });
         props.handleDataChange(data, '');
         setName('');
@@ -91,6 +95,7 @@ function New(props: {
           <DateTimePickerFormType inputName='DateTime' handleDateChange={handleDateChange} />
           <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' />
           <RangeFormType inputName='Slider' handleRangeChange={handleRangeChange} size='medium' defaultValue={[20, 40]} />
+          <RadioPickerFormType inputName='Radio' handleRadioChange={handleRadioChange} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
