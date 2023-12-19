@@ -1,7 +1,7 @@
 interface ExampleItem {
   id: number;
   name: string;
-  datetime?: string;
+  datetime: Date | undefined;
   slider?: number;
   active: boolean;
   rating: number;

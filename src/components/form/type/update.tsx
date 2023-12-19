@@ -9,21 +9,28 @@ import ToastMessage from '@/models/ToastMessage';
 import TextFormType from '@/utils/formTypes/TextFormType';
 import SwitchFormType from '@/utils/formTypes/SwitchFormType';
 import RateFormType from '@/utils/formTypes/RateFormType';
+import DatePickerFormType from '@/utils/formTypes/DatePickerFormType';
 
 function Update(props: {
-  updateValue: { id: number, name: string, active: boolean, rating: number, data: ExampleItems };
+  updateValue: {
+    id: number, name: string, active: boolean, rating: number, datetime: Date | undefined,
+    data: ExampleItems
+  };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
 }) {
   const [id] = useState<number>();
   const [name, setName] = useState<string>(props.updateValue.name);
   const [active, setActive] = useState<boolean>(props.updateValue.active);
   const [rating, setRating] = useState<number>(props.updateValue.rating);
+  const [date, setDate] = useState<Date | undefined>(props.updateValue.datetime);
+
   const [oneExample, setOneExample] =
     useState<ExampleItem>({
       id: props.updateValue.id,
       name: props.updateValue.name,
       active: props.updateValue.active,
       rating: props.updateValue.rating,
+      datetime: props.updateValue.datetime,
     });
   const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
@@ -38,8 +45,9 @@ function Update(props: {
         name: name ? name : oneExample.name,
         active: active,
         rating: rating ? rating : oneExample.rating,
+        datetime: date ? date : oneExample.datetime,
       };
-      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating });
+      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating, datetime: date });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
@@ -58,6 +66,7 @@ function Update(props: {
   function handleValueChange(nameValue: string) { setName(nameValue); }
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
+  function handleDateChange(dateValue: Date) { setDate(dateValue); }
 
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}
@@ -68,6 +77,7 @@ function Update(props: {
           name: props.updateValue.name,
           active: props.updateValue.active,
           rating: props.updateValue.rating,
+          datetime: props.updateValue.datetime,
         });
       }}>
       <Edit/>
@@ -98,6 +108,8 @@ function Update(props: {
           <RateFormType inputName='Rating' handleRateChange={handleRateChange}
             defaultValue={parseFloat(String(props.updateValue.rating))} precision={0.5}
           />
+
+          <DatePickerFormType inputName='Date' handleDateChange={handleDateChange} defaultValue={props.updateValue.datetime}/>
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

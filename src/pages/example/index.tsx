@@ -104,7 +104,7 @@ function Example() {
                     <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
                       <TableCell>{id}</TableCell>
                       <TableCell sx={{ fontWeight: 'bold' }}>{name}</TableCell>
-                      <TableCell>{datetime}</TableCell>
+                      <TableCell>{datetime?.toString()}</TableCell>
                       <TableCell>{slider}</TableCell>
                       <TableCell>{active ? <CheckIcon/> : <CloseIcon/>}</TableCell>
                       <TableCell>{rating}</TableCell>
@@ -114,7 +114,7 @@ function Example() {
                       <TableCell>{autocomplete}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, active, rating, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{ id, name, active, rating, datetime, data }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>
