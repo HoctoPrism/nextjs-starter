@@ -8,11 +8,13 @@ function SwitchFormType(props: {
   handleSwitchChange: (active: boolean) => void,
   errors: FieldErrors<{ name: string; }>,
   register: UseFormRegister<{ name: string; }>
-  defaultValue?: boolean
+  defaultValue?: boolean,
+  color?: 'primary' | 'secondary',
+  sx?: object
 }) {
 
   const { control } = useForm();
-  const { inputName, config, handleSwitchChange, errors, register, defaultValue } = props;
+  const { inputName, config, handleSwitchChange, errors, register, defaultValue, color, sx } = props;
   const [switchValue, setSwitchValue] = useState(defaultValue);
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLInputElement>) {
@@ -33,6 +35,8 @@ function SwitchFormType(props: {
             onChange={(e) => setValueAndRefreshToParent(e)}
             defaultValue={defaultValueSwitch}
             checked={switchValue}
+            color={color}
+            sx={sx}
           />
         } label={inputName}
         />

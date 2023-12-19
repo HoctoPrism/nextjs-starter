@@ -8,16 +8,18 @@ function SliderFormType(props: {
   min?: number,
   max?: number,
   step?: number,
+  color?: 'primary' | 'secondary'
+  sx?: object
 }) {
 
-  const { inputName, handleSliderChange, defaultValue, size, min, max, step } = props;
+  const { inputName, handleSliderChange, defaultValue, size, min, max, step, color, sx } = props;
 
   function setValueAndRefreshToParent(e: Event) {
     handleSliderChange(e?.target?.value);
   }
 
   return <FormControl>
-    <Typography gutterBottom>{inputName}</Typography>
+    <Typography>{inputName}</Typography>
     <Slider
       defaultValue={defaultValue}
       aria-label={inputName}
@@ -27,7 +29,8 @@ function SliderFormType(props: {
       min={min}
       max={max}
       step={step}
-      style={{ width: 400 }}
+      color={color}
+      sx={sx}
     />
   </FormControl>;
 }

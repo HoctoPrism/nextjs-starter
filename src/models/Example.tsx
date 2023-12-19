@@ -11,6 +11,7 @@ interface ExampleItem {
   autocomplete?: string;
   created_at?: string;
   updated_at?: string;
+  range?: number[] | undefined | string;
 }
 
 interface ExampleItems extends Array<ExampleItem> {}

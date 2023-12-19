@@ -94,12 +94,13 @@ function Example() {
                     <TableCell key={8}>Radio</TableCell>
                     <TableCell key={9}>Checkbox</TableCell>
                     <TableCell key={10}>Autocomplete</TableCell>
-                    <TableCell key={11} align="right">Actions</TableCell>
+                    <TableCell key={11}>Range</TableCell>
+                    <TableCell key={12} align="right">Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
-                    { id, name, datetime, slider, active, rating, select, radio, checkbox, autocomplete },
+                    { id, name, datetime, slider, active, rating, select, radio, checkbox, autocomplete, range },
                   ) => (
                     <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
                       <TableCell>{id}</TableCell>
@@ -112,9 +113,10 @@ function Example() {
                       <TableCell>{radio}</TableCell>
                       <TableCell>{checkbox}</TableCell>
                       <TableCell>{autocomplete}</TableCell>
+                      <TableCell>{range}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, active, rating, datetime, slider, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{ id, name, active, rating, datetime, slider, range, data }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>

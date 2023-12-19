@@ -11,10 +11,11 @@ import SwitchFormType from '@/utils/formTypes/SwitchFormType';
 import RateFormType from '@/utils/formTypes/RateFormType';
 import DatePickerFormType from '@/utils/formTypes/DatePickerFormType';
 import SliderFormType from '@/utils/formTypes/SliderFormType';
+import RangeFormType from '@/utils/formTypes/RangeFormType';
 
 function Update(props: {
   updateValue: {
-    id: number, name: string, active: boolean, rating: number, datetime: Date | undefined, slider: number | undefined,
+    id: number, name: string, active: boolean, rating: number, datetime: Date | undefined, slider: number | undefined, range: number[]
     data: ExampleItems
   };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
@@ -25,6 +26,7 @@ function Update(props: {
   const [rating, setRating] = useState<number>(props.updateValue.rating);
   const [date, setDate] = useState<Date | undefined>(props.updateValue.datetime);
   const [slider, setSlider] = useState<number | undefined>(props.updateValue.slider);
+  const [range, setRange] = useState<number[]>(props.updateValue.range);
 
   const [oneExample, setOneExample] =
     useState<ExampleItem>({
@@ -34,6 +36,7 @@ function Update(props: {
       rating: props.updateValue.rating,
       datetime: props.updateValue.datetime,
       slider: props.updateValue.slider,
+      range: props.updateValue.range,
     });
   const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
@@ -50,8 +53,9 @@ function Update(props: {
         rating: rating ? rating : oneExample.rating,
         datetime: date ? date : oneExample.datetime,
         slider: slider ? slider : oneExample.slider,
+        range: range ? range : oneExample.range,
       };
-      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating, datetime: date, slider });
+      const res = await axios.patch('/api/examples/' + oneExample?.id, { name, active, rating, datetime: date, slider, range });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
@@ -72,6 +76,7 @@ function Update(props: {
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
   function handleDateChange(dateValue: Date) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
+  function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
 
 
   return (<Box >
@@ -99,7 +104,7 @@ function Update(props: {
     >
       <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="edit-example-title">Editer un example</Typography>
-        <form onSubmit={handleSubmit(editExampleForm)}>
+        <form onSubmit={handleSubmit(editExampleForm)} className='f-c-c-fs'>
 
           <TextFormType
             inputName={'name'}
@@ -117,6 +122,7 @@ function Update(props: {
 
           <DatePickerFormType inputName='Date' handleDateChange={handleDateChange} defaultValue={props.updateValue.datetime}/>
           <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' defaultValue={props.updateValue.slider}/>
+          <RangeFormType inputName='Slider' handleRangeChange={handleRangeChange} size='medium' defaultValue={props.updateValue.range ?? [10, 30]} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

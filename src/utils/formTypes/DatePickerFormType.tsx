@@ -6,9 +6,10 @@ function DatePickerFormType(props: {
   inputName: string,
   handleDateChange: (dateValue: Date) => void,
   defaultValue?: Date | undefined
+  sx?: object
 }) {
 
-  const { inputName, handleDateChange, defaultValue } = props;
+  const { inputName, handleDateChange, defaultValue, sx } = props;
 
   function setValueAndRefreshToParent(e: Dayjs | null) {
     handleDateChange(dayjs(e).toDate());
@@ -19,6 +20,7 @@ function DatePickerFormType(props: {
       label={inputName}
       defaultValue={dayjs(defaultValue)}
       onChange={(e) => setValueAndRefreshToParent(e)}
+      sx={sx}
     />
   </LocalizationProvider>;
 }

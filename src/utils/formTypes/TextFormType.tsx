@@ -7,11 +7,13 @@ function TextFormType(props: {
   handleValueChange: (name: string) => void,
   errors: FieldErrors<{ name: string; }>,
   register: UseFormRegister<{ name: string; }>
-  defaultValue?: string
+  defaultValue?: string,
+  sx?: object,
+  color?: 'primary' | 'secondary'
 }) {
 
   const { control } = useForm();
-  const { inputName, config, handleValueChange, errors, register, defaultValue } = props;
+  const { inputName, config, handleValueChange, errors, register, defaultValue, sx, color } = props;
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     handleValueChange(e.target.value);
@@ -25,10 +27,11 @@ function TextFormType(props: {
         <TextField
           {...register(inputName as unknown as 'name', config)}
           onChange={(e) => setValueAndRefreshToParent(e)}
-          style={{ width: 400, height: 50 }}
           label={inputName}
           variant="standard"
           defaultValue={defaultValue}
+          sx={sx}
+          color={color}
         />
       )}
     />

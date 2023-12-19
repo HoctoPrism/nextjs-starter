@@ -5,12 +5,14 @@ function RateFormType(props: {
   inputName: string,
   config?: object,
   handleRateChange: (rating: number) => void,
-  defaultValue: number
-  precision: number
+  defaultValue: number,
+  precision: number,
+  sx?: object,
+  color?: 'primary' | 'secondary'
 }) {
 
   const { control } = useForm();
-  const { inputName, handleRateChange, defaultValue, precision } = props;
+  const { inputName, handleRateChange, defaultValue, precision, sx, color } = props;
 
   function setValueAndRefreshToParent(e: React.SyntheticEvent) {
     handleRateChange(Number(e.target.value));
@@ -25,6 +27,8 @@ function RateFormType(props: {
           onChange={(e) => setValueAndRefreshToParent(e)}
           defaultValue={defaultValue}
           precision={precision}
+          sx={sx}
+          color={color}
         />
       )}
     />
