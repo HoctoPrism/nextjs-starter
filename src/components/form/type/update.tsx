@@ -15,7 +15,13 @@ import RangeFormType from '@/utils/formTypes/RangeFormType';
 
 function Update(props: {
   updateValue: {
-    id: number, name: string, active: boolean, rating: number, datetime: Date | undefined, slider: number | undefined, range: number[]
+    id: number,
+    name: string,
+    active: boolean,
+    rating: number,
+    datetime: Date | undefined,
+    slider: number | undefined,
+    range: number[] | string | undefined
     data: ExampleItems
   };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
@@ -26,7 +32,7 @@ function Update(props: {
   const [rating, setRating] = useState<number>(props.updateValue.rating);
   const [date, setDate] = useState<Date | undefined>(props.updateValue.datetime);
   const [slider, setSlider] = useState<number | undefined>(props.updateValue.slider);
-  const [range, setRange] = useState<number[]>(props.updateValue.range);
+  const [range, setRange] = useState<number[] | string | undefined>(props.updateValue.range);
 
   const [oneExample, setOneExample] =
     useState<ExampleItem>({
