@@ -114,7 +114,7 @@ function Example() {
                       <TableCell>{autocomplete}</TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{ id, name, active, rating, datetime, data }} handleDataChange={handleDataChange} />
+                          <Update updateValue={{ id, name, active, rating, datetime, slider, data }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>
                       </TableCell>

@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import SwitchFormType from '@/utils/formTypes/SwitchFormType';
 import RateFormType from '@/utils/formTypes/RateFormType';
 import DateTimePickerFormType from '@/utils/formTypes/DateTimePickerFormType';
+import SliderFormType from '@/utils/formTypes/SliderFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -19,6 +20,7 @@ function New(props: {
   const [active, setActive] = useState(false);
   const [rating, setRating] = useState<null | string | number>(null);
   const [date, setDate] = useState<Date | null>(null);
+  const [slider, setSlider] = useState<number>();
 
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
@@ -30,12 +32,13 @@ function New(props: {
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
   function handleDateChange(dateValue: Date) { setDate(dateValue); }
+  function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
 
   const newExampleForm = async () => {
     try {
-      const res = await axios.post('/api/examples', { name, active, rating, datetime: date });
+      const res = await axios.post('/api/examples', { name, active, rating, datetime: date, slider });
       if (res.status === 200) {
-        const tab = { id: 0, name: '', active: 0, rating: null, datetime: null };
+        const tab = { id: 0, name: '', active: 0, rating: null, datetime: null, slider: null };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{
           id : tab.id,
@@ -43,6 +46,7 @@ function New(props: {
           active: tab.active,
           rating: tab.rating,
           datetime: tab.datetime,
+          slider: tab.slider,
         }] });
         props.handleDataChange(data, '');
         setName('');
@@ -70,7 +74,7 @@ function New(props: {
       <Box className="modal-crud modal-example" sx={{ bgcolor: 'background.default' }}>
         <Typography variant="h4" sx={{ textAlign: 'center', mb: 4 }} id="new-example-title">Nouvel example</Typography>
 
-        <form onSubmit={handleSubmit(newExampleForm)}>
+        <form onSubmit={handleSubmit(newExampleForm)} className='f-c-c-fs'>
 
           <TextFormType
             inputName='Name'
@@ -81,6 +85,7 @@ function New(props: {
           <SwitchFormType inputName='Active' handleSwitchChange={handleSwitchChange} errors={errors} register={register} />
           <RateFormType inputName='Rating' handleRateChange={handleRateChange} defaultValue={0} precision={0.5} />
           <DateTimePickerFormType inputName='DateTime' handleDateChange={handleDateChange} />
+          <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
