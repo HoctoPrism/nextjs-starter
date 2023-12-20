@@ -22,10 +22,10 @@ function Update(props: {
     id: number,
     name: string,
     active: boolean,
-    rating: number,
-    datetime: Date | undefined,
-    slider: number | undefined,
-    range: number[] | string | undefined,
+    rating?: number,
+    datetime?: Date | undefined,
+    slider?: number | undefined,
+    range?: number[] | string | undefined,
     radio?: string,
     checkbox?: string[],
     autocomplete?: string,
@@ -37,14 +37,14 @@ function Update(props: {
   const [id] = useState<number>();
   const [name, setName] = useState<string>(props.updateValue.name);
   const [active, setActive] = useState<boolean>(props.updateValue.active);
-  const [rating, setRating] = useState<number>(props.updateValue.rating);
-  const [date, setDate] = useState<Date | undefined>(props.updateValue.datetime);
-  const [slider, setSlider] = useState<number | undefined>(props.updateValue.slider);
-  const [range, setRange] = useState<number[] | string | undefined>(props.updateValue.range);
-  const [radio, setRadio] = useState<string | undefined>(props.updateValue.radio);
-  const [checkbox, setCheckbox] = useState<undefined | string[]>(props.updateValue.checkbox);
-  const [autocomplete, setAutocomplete] = useState<string | undefined>(props.updateValue.autocomplete);
-  const [selectSimple, setSelectSimple] = useState<string | undefined>(props.updateValue.selectSimple);
+  const [rating, setRating] = useState<number | null | undefined>(props.updateValue.rating);
+  const [date, setDate] = useState<Date | null | undefined>(props.updateValue.datetime);
+  const [slider, setSlider] = useState<number | null | undefined>(props.updateValue.slider);
+  const [range, setRange] = useState<number[] | string | null | undefined>(props.updateValue.range);
+  const [radio, setRadio] = useState<string | null | undefined>(props.updateValue.radio);
+  const [checkbox, setCheckbox] = useState<null | undefined | string[]>(props.updateValue.checkbox);
+  const [autocomplete, setAutocomplete] = useState<string | null | undefined>(props.updateValue.autocomplete);
+  const [selectSimple, setSelectSimple] = useState<string | null | undefined>(props.updateValue.selectSimple);
 
   const [oneExample, setOneExample] =
     useState<ExampleItem>({

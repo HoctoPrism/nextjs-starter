@@ -2,7 +2,7 @@ import { Box, Button, Modal, Snackbar, Typography, Alert } from '@mui/material';
 import { useState } from 'react';
 import update from 'immutability-helper';
 import axios from 'axios';
-import { ExampleItems } from '@/models/Example';
+import { ExampleItem, ExampleItems } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 import TextFormType from '@/utils/formTypes/TextFormType';
 import { useForm } from 'react-hook-form';
@@ -43,7 +43,7 @@ function New(props: {
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
   function handleDateChange(dateValue: Date | undefined) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
-  function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
+  function handleRangeChange(rangeValue: number[] | undefined) { setRange(rangeValue); }
   function handleRadioChange(radioValue: string) { setRadio(radioValue); }
   function handleCheckboxChange(checkboxValue: string[]) { setCheckbox(checkboxValue); }
   function handleAutoCompleteChange(autocompleteValue: string | undefined) { setAutocomplete(autocompleteValue); }
@@ -55,9 +55,9 @@ function New(props: {
         name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete, select: selectSimple,
       });
       if (res.status === 200) {
-        const tab = {
-          id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null,
-          checkbox: null, autocomplete: null, selectSimple: null,
+        const tab: ExampleItem = {
+          id: 0, name: '', active: false, rating: undefined, datetime: undefined, slider: undefined, range: undefined, radio: undefined,
+          checkbox: undefined, autocomplete: undefined, select: undefined,
         };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{
@@ -71,7 +71,7 @@ function New(props: {
           radio: tab.radio,
           checkbox: tab.checkbox,
           autocomplete: tab.autocomplete,
-          select: tab.selectSimple,
+          select: tab.select,
         }] });
         props.handleDataChange(data, '');
         setName('');

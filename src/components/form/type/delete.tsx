@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import update from 'immutability-helper';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import axios from 'axios';
-import { ExampleItem, ExampleItems } from '@/models/Example';
+import { ExampleItems, ExampleItemDelete } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 
 function Delete(props: {
@@ -11,7 +11,7 @@ function Delete(props: {
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
 }) {
 
-  const [oneExample, setOneExample] = useState<ExampleItem | null | undefined>(); // get parking
+  const [oneExample, setOneExample] = useState<ExampleItemDelete | null | undefined>(); // get parking
   const [delExample, setShowDelete] = useState(false);
   const [toast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<ToastMessage | null>();
