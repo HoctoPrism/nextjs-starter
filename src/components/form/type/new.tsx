@@ -13,6 +13,7 @@ import SliderFormType from '@/utils/formTypes/SliderFormType';
 import RangeFormType from '@/utils/formTypes/RangeFormType';
 import RadioPickerFormType from '@/utils/formTypes/RadioPickerFormType';
 import CheckboxFormType from '@/utils/formTypes/CheckboxFormType';
+import AutocompleteFormType from '@/utils/formTypes/AutocompleteFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -22,11 +23,12 @@ function New(props: {
   const [name, setName] = useState('');
   const [active, setActive] = useState(false);
   const [rating, setRating] = useState<null | string | number>(null);
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date | undefined>();
   const [slider, setSlider] = useState<number>();
   const [range, setRange] = useState<number[]>();
   const [radio, setRadio] = useState<string>();
-  const [checkbox, setCheckbox] = useState<string>();
+  const [checkbox, setCheckbox] = useState<string[]>([]);
+  const [autocomplete, setAutocomplete] = useState<string | null>();
 
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
@@ -37,20 +39,21 @@ function New(props: {
   function handleValueChange(nameValue: string) { setName(nameValue); }
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
-  function handleDateChange(dateValue: Date) { setDate(dateValue); }
+  function handleDateChange(dateValue: Date | undefined) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
   function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
   function handleRadioChange(radioValue: string) { setRadio(radioValue); }
-  function handleCheckboxChange(checkboxValue: string) { setCheckbox(checkboxValue); }
+  function handleCheckboxChange(checkboxValue: string[]) { setCheckbox(checkboxValue); }
+  function handleAutoCompleteChange(autocompleteValue: string | undefined) { setAutocomplete(autocompleteValue); }
 
   const newExampleForm = async () => {
     try {
       const res = await axios.post('/api/examples', {
-        name, active, rating, datetime: date, slider, range, radio, checkbox,
+        name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete,
       });
       if (res.status === 200) {
         const tab = {
-          id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null, checkbox: null,
+          id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null, checkbox: null, autocomplete: null,
         };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{
@@ -63,6 +66,7 @@ function New(props: {
           range: tab.range,
           radio: tab.radio,
           checkbox: tab.checkbox,
+          autocomplete: tab.autocomplete,
         }] });
         props.handleDataChange(data, '');
         setName('');
@@ -102,9 +106,10 @@ function New(props: {
           <RateFormType inputName='Rating' handleRateChange={handleRateChange} defaultValue={0} precision={0.5} />
           <DateTimePickerFormType inputName='DateTime' handleDateChange={handleDateChange} />
           <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' />
-          <RangeFormType inputName='Slider' handleRangeChange={handleRangeChange} size='medium' defaultValue={[20, 40]} />
+          <RangeFormType inputName='Range' handleRangeChange={handleRangeChange} size='medium' defaultValue={[20, 40]} />
           <RadioPickerFormType inputName='Radio' handleRadioChange={handleRadioChange} />
           <CheckboxFormType inputName='Checkbox' handleCheckboxChange={handleCheckboxChange} />
+          <AutocompleteFormType inputName='Autocomplete' handleAutoCompleteChange={handleAutoCompleteChange} sx={{ width: 400 }} freeSolo={true} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

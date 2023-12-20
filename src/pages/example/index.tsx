@@ -117,7 +117,7 @@ function Example() {
                       <TableCell>
                         <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                           <Update updateValue={{
-                            id, name, active, rating, datetime, slider, range, radio, checkbox, data,
+                            id, name, active, rating, datetime, slider, range, radio, checkbox, autocomplete, data,
                           }} handleDataChange={handleDataChange} />
                           <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
                         </Box>

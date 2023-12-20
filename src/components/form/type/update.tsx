@@ -14,6 +14,7 @@ import SliderFormType from '@/utils/formTypes/SliderFormType';
 import RangeFormType from '@/utils/formTypes/RangeFormType';
 import RadioPickerFormType from '@/utils/formTypes/RadioPickerFormType';
 import CheckboxFormType from '@/utils/formTypes/CheckboxFormType';
+import AutocompleteFormType from '@/utils/formTypes/AutocompleteFormType';
 
 function Update(props: {
   updateValue: {
@@ -23,9 +24,10 @@ function Update(props: {
     rating: number,
     datetime: Date | undefined,
     slider: number | undefined,
-    range: number[] | string | undefined
-    radio?: string
-    checkbox?: string
+    range: number[] | string | undefined,
+    radio?: string,
+    checkbox: string[],
+    autocomplete?: string,
     data: ExampleItems
   };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
@@ -38,7 +40,8 @@ function Update(props: {
   const [slider, setSlider] = useState<number | undefined>(props.updateValue.slider);
   const [range, setRange] = useState<number[] | string | undefined>(props.updateValue.range);
   const [radio, setRadio] = useState<string | undefined>(props.updateValue.radio);
-  const [checkbox, setCheckbox] = useState<string | undefined>(props.updateValue.checkbox);
+  const [checkbox, setCheckbox] = useState<undefined | string[]>(props.updateValue.checkbox);
+  const [autocomplete, setAutocomplete] = useState<string | undefined>(props.updateValue.autocomplete);
 
   const [oneExample, setOneExample] =
     useState<ExampleItem>({
@@ -51,6 +54,7 @@ function Update(props: {
       range: props.updateValue.range,
       radio: props.updateValue.radio,
       checkbox: props.updateValue.checkbox,
+      autocomplete: props.updateValue.autocomplete,
     });
   const [editExample, setShowEdit] = useState(false);
   const [toast, setShowToast] = useState(false);
@@ -69,10 +73,11 @@ function Update(props: {
         slider: slider ? slider : oneExample.slider,
         range: range ? range : oneExample.range,
         radio: radio ? radio : oneExample.radio,
-        checkbox: checkbox ? checkbox.toString() : oneExample.checkbox,
+        checkbox: checkbox ? checkbox : oneExample.checkbox,
+        autocomplete: autocomplete ? autocomplete : oneExample.autocomplete,
       };
       const res = await axios.patch('/api/examples/' + oneExample?.id, {
-        name, active, rating, datetime: date, slider, range, radio, checkbox,
+        name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete,
       });
       if (res.status === 200) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
@@ -92,11 +97,12 @@ function Update(props: {
   function handleValueChange(nameValue: string) { setName(nameValue); }
   function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
   function handleRateChange(ratingValue: number) { setRating(ratingValue); }
-  function handleDateChange(dateValue: Date) { setDate(dateValue); }
+  function handleDateChange(dateValue: Date | undefined) { setDate(dateValue); }
   function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
   function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
   function handleRadioChange(radioValue: string) { setRadio(radioValue); }
-  function handleCheckboxChange(checkboxValue: string) { setCheckbox(checkboxValue); }
+  function handleCheckboxChange(checkboxValue: undefined | string[]) { setCheckbox(checkboxValue); }
+  function handleAutoCompleteChange(autocompleteValue: string | undefined) { setAutocomplete(autocompleteValue); }
 
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}
@@ -112,6 +118,7 @@ function Update(props: {
           range: props.updateValue.range,
           radio: props.updateValue.radio,
           checkbox: props.updateValue.checkbox,
+          autocomplete: props.updateValue.autocomplete,
         });
       }}>
       <Edit/>
@@ -145,9 +152,12 @@ function Update(props: {
 
           <DatePickerFormType inputName='Date' handleDateChange={handleDateChange} defaultValue={props.updateValue.datetime}/>
           <SliderFormType inputName='Slider' handleSliderChange={handleSliderChange} size='medium' defaultValue={props.updateValue.slider}/>
-          <RangeFormType inputName='Slider' handleRangeChange={handleRangeChange} size='medium' defaultValue={props.updateValue.range ?? [10, 30]} />
+          <RangeFormType inputName='Range' handleRangeChange={handleRangeChange} size='medium' defaultValue={props.updateValue.range ?? [10, 30]} />
           <RadioPickerFormType inputName='Radio' handleRadioChange={handleRadioChange} defaultValue={props.updateValue.radio} />
           <CheckboxFormType inputName='Checkbox' handleCheckboxChange={handleCheckboxChange} defaultValue={props.updateValue.checkbox} />
+          <AutocompleteFormType inputName='Autocomplete' handleAutoCompleteChange={handleAutoCompleteChange} sx={{ width: 400 }}
+            defaultValue={props.updateValue.autocomplete}
+          />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>

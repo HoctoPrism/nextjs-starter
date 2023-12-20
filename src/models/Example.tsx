@@ -7,7 +7,7 @@ interface ExampleItem {
   rating: number;
   select?: string;
   radio?: string;
-  checkbox?: string;
+  checkbox?: string[];
   autocomplete?: string;
   created_at?: string;
   updated_at?: string;

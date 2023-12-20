@@ -28,7 +28,7 @@ function RangeFormType(props: {
   return <FormControl>
     <Typography gutterBottom>{inputName}</Typography>
     <Slider
-      value={parseInt(value as string)}
+      value={value as number[]}
       getAriaLabel={() => inputName}
       valueLabelDisplay="auto"
       size={size}

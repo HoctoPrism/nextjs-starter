@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function DateTimePickerFormType(props: {
   inputName: string,
-  handleDateChange: (dateValue: Date) => void,
+  handleDateChange: (dateValue: Date | undefined) => void,
   defaultValue?: Date | undefined,
   sx?: object
 }) {

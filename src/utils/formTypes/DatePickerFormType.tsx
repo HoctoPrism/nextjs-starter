@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 function DatePickerFormType(props: {
   inputName: string,
-  handleDateChange: (dateValue: Date) => void,
+  handleDateChange: (dateValue: Date | undefined) => void,
   defaultValue?: Date | undefined
   sx?: object
 }) {
