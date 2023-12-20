@@ -16,9 +16,9 @@ import {
 import axios from 'axios';
 import defineTitle from '@/utils/defineTitle';
 import { ExampleItems } from '@/models/Example';
-import New from '@/components/form/type/new';
-import Update from '@/components/form/type/update';
-import Delete from '@/components/form/type/delete';
+import New from '@/components/form/example/new';
+import Update from '@/components/form/example/update';
+import Delete from '@/components/form/example/delete';
 import ToastMessage from '@/models/ToastMessage';
 import DashboardGridSkeleton from '@/utils/skeletons/DashboardGridSkeleton';
 import CheckIcon from '@mui/icons-material/Check';
