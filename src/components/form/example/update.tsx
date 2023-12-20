@@ -30,7 +30,7 @@ function Update(props: {
     checkbox?: string[],
     autocomplete?: string,
     selectSimple?: string,
-    data: ExampleItems
+    data: ExampleItems | null | undefined,
   };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
 }) {
@@ -84,7 +84,7 @@ function Update(props: {
       const res = await axios.patch('/api/examples/' + oneExample?.id, {
         name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete, select: selectSimple,
       });
-      if (res.status === 200) {
+      if (res.status === 200 && props.updateValue.data) {
         const foundIndex = props.updateValue.data.findIndex(x => x.id === oneExample?.id);
         const data = update(props.updateValue.data, { [foundIndex]: { $set: updatedPark } });
         props.handleDataChange(data, 'edit');

@@ -1,65 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Paper,
-  Snackbar,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Typography,
-  Alert,
-} from '@mui/material';
+import * as React from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
-import defineTitle from '@/utils/defineTitle';
-import { ExampleItems } from '@/models/Example';
-import New from '@/components/form/example/new';
+import { useEffect, useState } from 'react';
+import { Alert, Box, Paper, Snackbar, Typography } from '@mui/material';
 import Update from '@/components/form/example/update';
 import Delete from '@/components/form/example/delete';
+import { ExampleItem, ExampleItems } from '@/models/Example';
+import defineTitle from '@/utils/defineTitle';
 import ToastMessage from '@/models/ToastMessage';
+import New from '@/components/form/example/new';
 import DashboardGridSkeleton from '@/utils/skeletons/DashboardGridSkeleton';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DisplayExample from '@/components/form/example/displayExample';
 
-function Example() {
+export default function Example() {
   defineTitle('Liste des examples');
 
-  const [data, setData] = useState<ExampleItems | null>();
   const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ExampleItems>([]);
   const [toast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<ToastMessage>();
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event: React.MouseEvent | null, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent) => {
-    const { name } = (event.target as HTMLButtonElement).dataset;
-    setRowsPerPage(+{ name });
-    setPage(0);
-  };
-
   useEffect(() => {
-    axios.get('/api/examples').then( async (actualData) => {
+    axios.get('/api/examples').then(async (actualData) => {
       actualData = actualData.data;
       setData(actualData.data);
-      setLoading(true);
-    }).catch(() => {
-      setData(null);
-    }).finally(() => {
       setLoading(false);
+    }).catch(() => {
+      setData([]);
     });
   }, []);
 
   const handleDataChange = (dataChange: ExampleItems | undefined | null, message:string) => {
-    setData(dataChange);
+    setData(dataChange || []);
     if (message && message === 'edit') {
       setToastMessage({ message: 'Example modifié !', severity: 'success' });
       setShowToast(true);
@@ -68,6 +42,35 @@ function Example() {
       setShowToast(true);
     }
   };
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 50 },
+    { field: 'name', headerName: 'Name', width: 100 },
+    { field: 'datetime', headerName: 'Datetime', width: 200 },
+    { field: 'slider', headerName: 'Slider', width: 100 },
+    { field: 'active', headerName: 'Active', width: 50, renderCell: (params: { row: ExampleItem }) => {
+      const { active } = params.row;
+      return (<Box>{active ? <CheckIcon/> : <CloseIcon/>}</Box>);
+    } },
+    { field: 'rating', headerName: 'Rating', width: 100 },
+    { field: 'select', headerName: 'Select', width: 100 },
+    { field: 'radio', headerName: 'Radio', width: 100 },
+    { field: 'checkbox', headerName: 'Checkbox', width: 100, renderCell: (params: { row: ExampleItem }) => {
+      const { checkbox } = params.row;
+      return (<Box>{checkbox ? <DisplayExample display={checkbox} /> : ''}</Box>);
+    } },
+    { field: 'autocomplete', headerName: 'Autocomplete', width: 100 },
+    { field: 'range', headerName: 'Range', width: 100 },
+    { field: 'actions', headerName: 'Actions', width: 200, renderCell: (params: { row: ExampleItem }) => {
+      const { id, name, active, rating, datetime, slider, range, radio, checkbox, autocomplete, select } = params.row;
+      return (<Box sx={{ display: 'flex', justifyContent: 'right' }}>
+        <Update updateValue={{
+          id, name, active, rating, datetime, slider, range, radio, checkbox, autocomplete, selectSimple: select, data,
+        }} handleDataChange={handleDataChange} />
+        <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
+      </Box>);
+    } },
+  ];
 
   return (
     <Box id="example">
@@ -79,80 +82,29 @@ function Example() {
         {loading ? (
           <DashboardGridSkeleton />
         ) : (
-          <Box sx={{ maxWidth: '100%' }}>
+          <Box sx={{ width: '90%' }}>
             <New newValue={{ data }} handleDataChange={handleDataChange} />
-            <TableContainer sx={{ mt: 4 }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell key={1}>ID</TableCell>
-                    <TableCell key={2}>Nom</TableCell>
-                    <TableCell key={3}>Datetime</TableCell>
-                    <TableCell key={4}>Slider</TableCell>
-                    <TableCell key={5}>Switch</TableCell>
-                    <TableCell key={6}>Rate</TableCell>
-                    <TableCell key={7}>Select</TableCell>
-                    <TableCell key={8}>Radio</TableCell>
-                    <TableCell key={9}>Checkbox</TableCell>
-                    <TableCell key={10}>Autocomplete</TableCell>
-                    <TableCell key={11}>Range</TableCell>
-                    <TableCell key={12} align="right">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data && data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((
-                    { id, name, datetime, slider, active, rating, select, radio, checkbox, autocomplete, range },
-                  ) => (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={name + id}>
-                      <TableCell>{id}</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }}>{name}</TableCell>
-                      <TableCell>{datetime?.toString()}</TableCell>
-                      <TableCell>{slider}</TableCell>
-                      <TableCell>{active ? <CheckIcon/> : <CloseIcon/>}</TableCell>
-                      <TableCell>{rating}</TableCell>
-                      <TableCell>{select}</TableCell>
-                      <TableCell>{radio}</TableCell>
-                      <TableCell>{checkbox ? <DisplayExample display={checkbox} /> : ''}</TableCell>
-                      <TableCell>{autocomplete}</TableCell>
-                      <TableCell>{range}</TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
-                          <Update updateValue={{
-                            id, name, active, rating, datetime, slider, range, radio, checkbox, autocomplete, selectSimple: select, data,
-                          }} handleDataChange={handleDataChange} />
-                          <Delete deleteValue={{ id, name, data }} handleDataChange={handleDataChange} />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination
-              rowsPerPageOptions={[10, 25, 100]}
-              component="div"
-              count={data ? data.length : 0}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
+            <DataGrid
+              rows={data}
+              columns={columns}
+              pageSizeOptions={[5]}
+              checkboxSelection
+              loading={loading}
             />
+            <Snackbar
+              open={toast}
+              autoHideDuration={3000}
+              onClose={() => setShowToast(false)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert onClose={() => setShowToast(false)} severity={toastMessage?.severity || 'info'} sx={{ width: '100%' }}>
+                {toastMessage?.message || ''}
+              </Alert>
+            </Snackbar>
           </Box>
         )}
       </Paper>
-
-      <Snackbar
-        open={toast}
-        autoHideDuration={3000}
-        onClose={() => setShowToast(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert onClose={() => setShowToast(false)} severity={toastMessage && toastMessage.severity} sx={{ width: '100%' }}>
-          {toastMessage && toastMessage.message}
-        </Alert>
-      </Snackbar>
     </Box>
+
   );
 }
-
-export default Example;

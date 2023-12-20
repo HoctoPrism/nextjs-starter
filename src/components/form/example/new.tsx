@@ -85,7 +85,7 @@ function New(props: {
     }
   };
 
-  return (<Box>
+  return (<Box sx={{ marginBottom: 5 }}>
     <Button variant="contained" onClick={() => setShowNew(true)}>Ajouter</Button>
     <Modal
       id="modal-example-container"

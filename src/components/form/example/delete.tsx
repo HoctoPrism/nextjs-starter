@@ -7,7 +7,7 @@ import { ExampleItems, ExampleItemDelete } from '@/models/Example';
 import ToastMessage from '@/models/ToastMessage';
 
 function Delete(props: {
-  deleteValue: { id: number, name: string, data: ExampleItems };
+  deleteValue: { id: number, name: string, data: ExampleItems | null | undefined };
   handleDataChange: (dataChange: ExampleItems | undefined | null, message: string) => void
 }) {
 
@@ -21,10 +21,12 @@ function Delete(props: {
     try {
       const res = await axios.delete('/api/examples/' + oneExample?.id);
       if (res.status === 200) {
-        const foundIndex = props.deleteValue.data.findIndex(x => x.id === oneExample?.id);
-        const data = update(props.deleteValue.data, { $splice: [[foundIndex, 1]] });
-        props.handleDataChange(data, 'delete');
-        setShowDelete(false);
+        if (props.deleteValue.data) {
+          const foundIndex =  props.deleteValue.data.findIndex(x => x.id === oneExample?.id);
+          const data = update(props.deleteValue.data, { $splice: [[foundIndex, 1]] });
+          props.handleDataChange(data, 'delete');
+          setShowDelete(false);
+        }
       } else {
         setToastMessage({ message: 'Une erreur est survenue', severity: 'error' });
       }

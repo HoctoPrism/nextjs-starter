@@ -55,7 +55,7 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
         <ThemeProvider theme={selectedTheme}>
           <CssBaseline enableColorScheme>
             <Header />
-            <Container maxWidth="lg" className='main-container'>
+            <Container maxWidth="xl" className='main-container'>
               <Component {...pageProps} />
             </Container>
             <Footer />
