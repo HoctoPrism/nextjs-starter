@@ -8,38 +8,37 @@ function CheckboxFormType(props: {
   sx?: object
   color?: 'primary' | 'secondary'
 }) {
-
   const { inputName, handleCheckboxChange, defaultValue, sx, color } = props;
-  const [value, setValue] = useState<string[]>(defaultValue ? JSON.parse(defaultValue as unknown as string) : []);
+  const [value, setValue] = useState<string[] | undefined>(defaultValue ? JSON.parse(defaultValue as unknown as string) : []);
+  const checkboxOptions = ['titi', 'toto', 'tata'];
 
-  const fakeData = ['titi', 'toto', 'tata'];
+  const setCheckboxValue = (newValue: string[]) => {
+    setValue(newValue);
+    handleCheckboxChange(newValue);
+  };
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.checked && !value.includes(e.target.value)) {
-      // If checkbox is checked, add its value to array
-      setValue([...value, e.target.value]);
-      handleCheckboxChange([...value, e.target.value]);
+    if (e.target.checked && value && !value.includes(e.target.value)) {
+      setCheckboxValue([...value, e.target.value]);
     } else {
-      // If checkbox is unchecked, remove its value from array
-      setValue(value?.filter((item) => item !== e.target.value));
-      handleCheckboxChange(value?.filter((item) => item !== e.target.value));
+      setCheckboxValue(value?.filter((item) => item !== e.target.value) || []);
     }
   }
 
   return <FormControl>
     <FormLabel id={inputName}>{inputName}</FormLabel>
     <FormGroup>
-      {fakeData.map((item, index) => {
+      {checkboxOptions.map((item, index) => {
         return <FormControlLabel
           key={index}
           control={
             <Checkbox
               defaultChecked={defaultValue ? defaultValue.includes(item) : false}
-              onChange={(e) => setValueAndRefreshToParent(e)}
+              onChange={setValueAndRefreshToParent}
               value={item} sx={sx} color={color}
             />
           }
-          label={item} />;
+          label={item}/>;
       })}
     </FormGroup>
   </FormControl>;

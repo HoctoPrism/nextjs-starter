@@ -14,6 +14,7 @@ import RangeFormType from '@/utils/formTypes/RangeFormType';
 import RadioPickerFormType from '@/utils/formTypes/RadioPickerFormType';
 import CheckboxFormType from '@/utils/formTypes/CheckboxFormType';
 import AutocompleteFormType from '@/utils/formTypes/AutocompleteFormType';
+import SelectSimpleFormType from '@/utils/formTypes/SelectSimpleFormType';
 
 function New(props: {
   newValue: { data: ExampleItems | null | undefined };
@@ -29,6 +30,7 @@ function New(props: {
   const [radio, setRadio] = useState<string>();
   const [checkbox, setCheckbox] = useState<string[]>([]);
   const [autocomplete, setAutocomplete] = useState<string | null>();
+  const [selectSimple, setSelectSimple] = useState<string | null>();
 
   const [newExample, setShowNew] = useState(false);
   // Handle Toast event
@@ -45,15 +47,17 @@ function New(props: {
   function handleRadioChange(radioValue: string) { setRadio(radioValue); }
   function handleCheckboxChange(checkboxValue: string[]) { setCheckbox(checkboxValue); }
   function handleAutoCompleteChange(autocompleteValue: string | undefined) { setAutocomplete(autocompleteValue); }
+  function handleSelectSimpleChange(selectSimpleValue: string | undefined) { setSelectSimple(selectSimpleValue); }
 
   const newExampleForm = async () => {
     try {
       const res = await axios.post('/api/examples', {
-        name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete,
+        name, active, rating, datetime: date, slider, range, radio, checkbox, autocomplete, select: selectSimple,
       });
       if (res.status === 200) {
         const tab = {
-          id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null, checkbox: null, autocomplete: null,
+          id: 0, name: '', active: 0, rating: null, datetime: null, slider: null, range: null, radio: null,
+          checkbox: null, autocomplete: null, selectSimple: null,
         };
         await Object.assign(tab, res.data.data);
         const data = update(props.newValue.data, { $push: [{
@@ -67,6 +71,7 @@ function New(props: {
           radio: tab.radio,
           checkbox: tab.checkbox,
           autocomplete: tab.autocomplete,
+          select: tab.selectSimple,
         }] });
         props.handleDataChange(data, '');
         setName('');
@@ -110,6 +115,7 @@ function New(props: {
           <RadioPickerFormType inputName='Radio' handleRadioChange={handleRadioChange} />
           <CheckboxFormType inputName='Checkbox' handleCheckboxChange={handleCheckboxChange} />
           <AutocompleteFormType inputName='Autocomplete' handleAutoCompleteChange={handleAutoCompleteChange} sx={{ width: 400 }} freeSolo={true} />
+          <SelectSimpleFormType inputName='SelectSimple' handleSelectSimpleChange={handleSelectSimpleChange} />
 
           <Box className="action-button">
             <Button type="submit" sx={{ m: 3 }} variant="contained">Envoyer</Button>
