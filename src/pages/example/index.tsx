@@ -23,6 +23,7 @@ import ToastMessage from '@/models/ToastMessage';
 import DashboardGridSkeleton from '@/utils/skeletons/DashboardGridSkeleton';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import DisplayExample from '@/components/form/example/displayExample';
 
 function Example() {
   defineTitle('Liste des examples');
@@ -111,7 +112,7 @@ function Example() {
                       <TableCell>{rating}</TableCell>
                       <TableCell>{select}</TableCell>
                       <TableCell>{radio}</TableCell>
-                      <TableCell>{checkbox}</TableCell>
+                      <TableCell>{checkbox ? <DisplayExample display={checkbox} /> : ''}</TableCell>
                       <TableCell>{autocomplete}</TableCell>
                       <TableCell>{range}</TableCell>
                       <TableCell>
