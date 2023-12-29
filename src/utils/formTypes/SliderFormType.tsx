@@ -15,7 +15,7 @@ function SliderFormType(props: {
   const { inputName, handleSliderChange, defaultValue, size, min, max, step, color, sx } = props;
 
   function setValueAndRefreshToParent(e: number | number[]) {
-    handleSliderChange(e as number);
+    handleSliderChange(Number(e));
   }
 
   return <FormControl>
