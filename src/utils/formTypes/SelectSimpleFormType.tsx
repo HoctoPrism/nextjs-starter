@@ -11,7 +11,7 @@ function SelectSimpleFormType(props: {
 }) {
 
   const { inputName, handleSelectSimpleChange, defaultValue, sx, color, variant } = props;
-  const [example, setExample] = useState<string | undefined>(defaultValue);
+  const [example, setExample] = useState<string | undefined>(defaultValue ?? '');
 
   const data = ['a', 'b', 'c'];
 

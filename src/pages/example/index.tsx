@@ -85,9 +85,12 @@ export default function Example() {
           <Box sx={{ width: '90%' }}>
             <New newValue={{ data }} handleDataChange={handleDataChange} />
             <DataGrid
+              initialState={{
+                pagination: { paginationModel: { pageSize: 20 } },
+              }}
               rows={data}
               columns={columns}
-              pageSizeOptions={[5]}
+              pageSizeOptions={[20, 50, 100]}
               checkboxSelection
               loading={loading}
             />

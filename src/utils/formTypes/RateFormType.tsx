@@ -23,10 +23,15 @@ function RateFormType(props: {
     <Controller
       name={inputName as unknown as 'name'}
       control={control}
-      render={() => (
+      defaultValue={defaultValue}
+      render={({ field }) => (
         <Rating
-          onChange={(e) => setValueAndRefreshToParent(e)}
-          defaultValue={defaultValue}
+          {...field}
+          value={+field.value}
+          onChange={(e) => {
+            field.onChange(e);
+            setValueAndRefreshToParent(e);
+          }}
           precision={precision}
           sx={sx}
           color={color}

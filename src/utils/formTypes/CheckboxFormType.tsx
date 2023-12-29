@@ -9,7 +9,13 @@ function CheckboxFormType(props: {
   color?: 'primary' | 'secondary'
 }) {
   const { inputName, handleCheckboxChange, defaultValue, sx, color } = props;
-  const [value, setValue] = useState<string[] | undefined>(defaultValue ? JSON.parse(defaultValue as unknown as string) : []);
+  const [value, setValue] = useState<string[] | undefined>(
+    Array.isArray(defaultValue)
+      ? defaultValue
+      : defaultValue
+        ? JSON.parse(defaultValue as unknown as string)
+        : [],
+  );
   const checkboxOptions = ['titi', 'toto', 'tata'];
 
   const setCheckboxValue = (newValue: string[]) => {

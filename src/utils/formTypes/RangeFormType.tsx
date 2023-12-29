@@ -1,5 +1,5 @@
 import { FormControl, Slider, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function RangeFormType(props: {
   inputName: string,
@@ -19,20 +19,14 @@ function RangeFormType(props: {
     handleRangeChange(target.value as unknown as number[]);
   }
 
-  useEffect(() => {
-    if (typeof defaultValue === 'string') {
-      setValue(JSON.parse(defaultValue));
-    }
-  }, [defaultValue]);
-
   return <FormControl>
     <Typography gutterBottom>{inputName}</Typography>
     <Slider
-      value={value as number[]}
+      value={typeof value === 'string' ? JSON.parse(value) as number[] : value}
       getAriaLabel={() => inputName}
       valueLabelDisplay="auto"
       size={size}
-      onChange={(e) => setValueAndRefreshToParent(e)}
+      onChange={setValueAndRefreshToParent}
       style={{ width: 400 }}
       color={color}
       sx={sx}

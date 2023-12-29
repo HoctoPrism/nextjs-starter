@@ -14,19 +14,18 @@ function SliderFormType(props: {
 
   const { inputName, handleSliderChange, defaultValue, size, min, max, step, color, sx } = props;
 
-  function setValueAndRefreshToParent(e: Event) {
-    const target = e.target as HTMLInputElement;
-    handleSliderChange(Number(target?.value));
+  function setValueAndRefreshToParent(e: number | number[]) {
+    handleSliderChange(e as number);
   }
 
   return <FormControl>
     <Typography>{inputName}</Typography>
     <Slider
-      defaultValue={defaultValue}
-      aria-label={inputName}
+      defaultValue={defaultValue || [0]}
+      getAriaLabel={() => inputName}
       valueLabelDisplay="auto"
       size={size}
-      onChange={(e) => setValueAndRefreshToParent(e)}
+      onChange={(e, newValue) => setValueAndRefreshToParent(newValue)}
       min={min}
       max={max}
       step={step}

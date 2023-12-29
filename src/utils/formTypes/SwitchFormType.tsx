@@ -15,7 +15,7 @@ function SwitchFormType(props: {
 
   const { control } = useForm();
   const { inputName, config, handleSwitchChange, errors, register, defaultValue, color, sx } = props;
-  const [switchValue, setSwitchValue] = useState(defaultValue);
+  const [switchValue, setSwitchValue] = useState(Boolean(defaultValue) ?? false);
 
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLInputElement>) {
     setSwitchValue(e.target.checked);

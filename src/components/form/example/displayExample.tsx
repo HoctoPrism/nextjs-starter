@@ -2,7 +2,7 @@ import { Box, Button, List, ListItem, Modal } from '@mui/material';
 import { useState } from 'react';
 
 function DisplayExample(props: {
-  display: string[];
+  display: string | string[];
 }) {
 
   const [route, setShowRoute] = useState(false);
@@ -21,11 +21,19 @@ function DisplayExample(props: {
       >
         <Box className="modal-crud modal-crud-route" sx={{ bgcolor: 'background.default' }}>
           <List dense sx={{ minWidth: 350 }}>
-            {display && JSON.parse(display as unknown as string).map((item: string) => (
-              <ListItem key={item} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                {item}
-              </ListItem>
-            ))}
+            {
+              display && typeof display === 'string'
+                ? JSON.parse(display).map((item: string) => (
+                  <ListItem key={item} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {item}
+                  </ListItem>
+                ))
+                : display && typeof display !== 'string' && display.map((item: string) => (
+                  <ListItem key={item} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {item}
+                  </ListItem>
+                ))
+            }
           </List>
           <Box className="action-button">
             <Button variant="contained" onClick={() => setShowRoute(false)}>Fermer</Button>
