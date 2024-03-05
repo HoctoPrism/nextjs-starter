@@ -5,7 +5,7 @@ function TextFormType(props: {
   inputName: string,
   config : object,
   handleValueChange: (name: string) => void,
-  errors: FieldErrors<{ name: string; }>,
+  errors: FieldErrors,
   register: UseFormRegister<{ name: string; }>
   defaultValue?: string,
   sx?: object,
@@ -18,6 +18,8 @@ function TextFormType(props: {
   function setValueAndRefreshToParent(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
     handleValueChange(e.target.value);
   }
+
+  const errorMessage = errors[inputName] ? errors[inputName]?.message : null;
 
   return <FormControl>
     <Controller
@@ -35,10 +37,12 @@ function TextFormType(props: {
         />
       )}
     />
-    {errors.name ? (
-      <Alert sx={{ mt:2, p:0, pl:2 }} severity="error">{errors.name?.message}</Alert>
+    {errorMessage ? (
+      <Alert sx={{ mt:2, p:0, pl:2 }} severity="error">{errorMessage as string}</Alert>
     ) : ''}
   </FormControl>;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 export default TextFormType;
