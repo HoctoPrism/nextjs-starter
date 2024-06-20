@@ -43,6 +43,4 @@ function TextFormType(props: {
   </FormControl>;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 export default TextFormType;
