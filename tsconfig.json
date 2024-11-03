@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2023",
+    "lib": ["dom", "dom.iterable", "esnext", "ES2023"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -13,6 +13,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
     "plugins": [
       {
         "name": "next"

@@ -10,7 +10,9 @@ function DisplayExample(props: {
 
   return (
     <Box>
-      <Button color="primary" variant="contained" sx={{ mx: 2 }} onClick={() => { setShowRoute(true); }}> Voir </Button>
+      <Button color="primary" variant="contained" sx={{ mx: 2 }} onClick={() => {
+        setShowRoute(true); 
+      }}> Voir </Button>
       <Modal
         id="modal-crud-container"
         hideBackdrop

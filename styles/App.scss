@@ -1,9 +1,9 @@
 /* Liste des feuilles de style */
 
-@import "pages/App";
-@import "pages/footer";
-@import "pages/home";
-@import "pages/navbar";
-@import "pages/theme";
-@import "pages/type";
-@import "pages/auth";
+@use "pages/App";
+@use "pages/footer";
+@use "pages/home";
+@use "pages/navbar";
+@use "pages/theme";
+@use "pages/type";
+@use "pages/auth";

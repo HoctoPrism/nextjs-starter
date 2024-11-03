@@ -99,16 +99,36 @@ function Update(props: {
     }
   };
 
-  function handleValueChange(nameValue: string) { setName(nameValue); }
-  function handleSwitchChange(switchValue: boolean) { setActive(switchValue); }
-  function handleRateChange(ratingValue: number) { setRating(ratingValue); }
-  function handleDateChange(dateValue: Date | undefined) { setDate(dateValue); }
-  function handleSliderChange(sliderValue: number) { setSlider(sliderValue); }
-  function handleRangeChange(rangeValue: number[]) { setRange(rangeValue); }
-  function handleRadioChange(radioValue: string) { setRadio(radioValue); }
-  function handleCheckboxChange(checkboxValue: undefined | string[]) { setCheckbox(checkboxValue); }
-  function handleAutoCompleteChange(autocompleteValue: string | undefined) { setAutocomplete(autocompleteValue); }
-  function handleSelectSimpleChange(selectSimpleValue: string | undefined) { setSelectSimple(selectSimpleValue); }
+  function handleValueChange(nameValue: string) {
+    setName(nameValue); 
+  }
+  function handleSwitchChange(switchValue: boolean) {
+    setActive(switchValue); 
+  }
+  function handleRateChange(ratingValue: number) {
+    setRating(ratingValue); 
+  }
+  function handleDateChange(dateValue: Date | undefined) {
+    setDate(dateValue); 
+  }
+  function handleSliderChange(sliderValue: number) {
+    setSlider(sliderValue); 
+  }
+  function handleRangeChange(rangeValue: number[]) {
+    setRange(rangeValue); 
+  }
+  function handleRadioChange(radioValue: string) {
+    setRadio(radioValue); 
+  }
+  function handleCheckboxChange(checkboxValue: undefined | string[]) {
+    setCheckbox(checkboxValue); 
+  }
+  function handleAutoCompleteChange(autocompleteValue: string | undefined) {
+    setAutocomplete(autocompleteValue); 
+  }
+  function handleSelectSimpleChange(selectSimpleValue: string | undefined) {
+    setSelectSimple(selectSimpleValue); 
+  }
 
   return (<Box >
     <Button color='secondary' variant='contained' sx={{ mx: 2 }}

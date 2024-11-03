@@ -27,9 +27,13 @@ function AutocompleteFormType(props: {
   return <FormControl>
     <Autocomplete
       value={value}
-      onChange={(e, newValue: string | null) => {setValueAndRefreshToParent(newValue);}}
+      onChange={(e, newValue: string | null) => {
+        setValueAndRefreshToParent(newValue);
+      }}
       inputValue={inputValue}
-      onInputChange={(event, newInputValue) => { setInputValue(newInputValue); }}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue); 
+      }}
       id={'controllable-states-' + inputName}
       options={options.map((option) => option)}
       sx={sx}

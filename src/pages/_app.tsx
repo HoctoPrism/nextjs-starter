@@ -19,6 +19,9 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../utils/createEmotionCache';
 const clientSideEmotionCache = createEmotionCache();
 import Cookies from 'js-cookie';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { parse } from 'cookie';
 
 export interface MyAppProps extends AppProps {
