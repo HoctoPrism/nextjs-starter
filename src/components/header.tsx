@@ -1,23 +1,55 @@
-import { AppBar, Box, Button } from '@mui/material';
-import { useEffect } from 'react';
-import Link from 'next/link';
-import ModeToggle from '@/utils/theme/modeToggle';
+import Link from "next/link";
 
-export default function Header() {
+import { auth, signOut } from "@/auth";
+import { Button } from "@/components/ui/button";
 
-  useEffect(() => {
-  }, []);
+import { ThemeToggle } from "./theme-toggle";
+
+export async function Header() {
+  const session = await auth();
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar className='header' id="navbar">
-        <Box sx={{ m: 5, flexGrow: 1 }} component="div">NextJS-Starter</Box>
-        <Box className="navbar">
-          <Link href='/'><Button color="secondary" variant='contained' sx={{ mr: 2 }}>Accueil</Button></Link>
-          <Link href='/example'><Button color="secondary" variant='contained' sx={{ mr: 2 }}>Example</Button></Link>
-          <ModeToggle/>
-        </Box>
-      </AppBar>
-    </Box>
+    <header className="bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur">
+      <div className="container mx-auto flex h-14 items-center justify-between gap-4 px-4">
+        <Link href="/" className="font-semibold">
+          NextJS Starter
+        </Link>
+        <nav className="flex items-center gap-2">
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/">Accueil</Link>
+          </Button>
+          {session?.user ? (
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/examples">Examples</Link>
+              </Button>
+              <span className="text-muted-foreground hidden text-sm sm:inline">
+                {session.user.email}
+              </span>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/" });
+                }}
+              >
+                <Button type="submit" variant="outline" size="sm">
+                  Déconnexion
+                </Button>
+              </form>
+            </>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm">
+                <Link href="/login">Connexion</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link href="/register">Inscription</Link>
+              </Button>
+            </>
+          )}
+          <ThemeToggle />
+        </nav>
+      </div>
+    </header>
   );
 }
