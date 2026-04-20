@@ -5,9 +5,6 @@
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-
 # next.js
 /.next/
 /out/
@@ -26,6 +23,17 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# SQLite data dir
+/data
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Drizzle metadata (generated migrations kept, meta regenerated per machine)
+/drizzle/meta
 
 # vercel
 .vercel
