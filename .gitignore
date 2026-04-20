@@ -45,3 +45,8 @@ next-env.d.ts
 # IDE
 .idea/
 .fleet/
+
+# Claude Code
+CLAUDE.md
+.claude/
+.playwright-mcp/
