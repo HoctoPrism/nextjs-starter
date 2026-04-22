@@ -2,6 +2,8 @@
 
 import { ThemeProvider } from "next-themes";
 
+import { PaletteProvider } from "@/components/palette-provider";
+
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
@@ -10,7 +12,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      {children}
+      <PaletteProvider>{children}</PaletteProvider>
     </ThemeProvider>
   );
 }

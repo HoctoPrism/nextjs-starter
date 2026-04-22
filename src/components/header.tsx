@@ -3,6 +3,7 @@ import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 
+import { ThemePicker } from "./theme-picker";
 import { ThemeToggle } from "./theme-toggle";
 
 export async function Header() {
@@ -47,6 +48,7 @@ export async function Header() {
               </Button>
             </>
           )}
+          <ThemePicker />
           <ThemeToggle />
         </nav>
       </div>
